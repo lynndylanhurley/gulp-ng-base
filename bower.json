@@ -1,0 +1,12 @@
+{
+  "name": "defsynth-site",
+  "private": true,
+  "dependencies": {
+    "bootstrap-sass": "git://github.com/twbs/bootstrap-sass.git#v3.1.0",
+    "modernizr": "~2.6.2",
+    "jquery": "~1.10.2",
+    "angular-ui-router": "~0.2.10",
+    "angular": "1.3.0-build.2463+sha.f8f97f8"
+  },
+  "devDependencies": {}
+}
