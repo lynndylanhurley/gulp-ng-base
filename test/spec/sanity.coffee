@@ -5,5 +5,4 @@ describe 'testing coffee specs', ->
 
 describe 'testing angular deps', ->
   it 'should define angular', ->
-    console.log 'htmls', window.__html__
     expect(angular).toBeDefined()

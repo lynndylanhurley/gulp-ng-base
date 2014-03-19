@@ -168,7 +168,11 @@ gulp.task('watch', ['bundle', 'karma', 'connect'], function () {
   gulp.watch('app/images/**/*', ['images']);
 
   // Watch bower files
-  gulp.watch('app/bower_components/*', ['wiredep']);
+  gulp.watch('app/bower_components/*', ['karma', 'templates', 'styles']);
 });
 
-
+// TODO:
+// [ ] sprites
+// [ ] stylus
+// [ ] s3
+// [ ] deploy
