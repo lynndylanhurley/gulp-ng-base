@@ -2,7 +2,7 @@
 * Nodejs
 
 ### Installation
-1. `npm install` - install all serverside deps
+1. `npm install` - install all server-side deps
 2. `bower install` - install all client-side deps
 
 ### Development
