@@ -1,9 +1,12 @@
 ### Requirements
-* Nodejs
+* nodejs
+* cairo
 
 ### Installation
+1. `brew install cairo` - for sprites
+1. `export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/X11/lib/pkgconfig` - still for sprites
 1. `npm install` - install all server-side deps
-2. `bower install` - install all client-side deps
+1. `bower install` - install all client-side deps
 
 ### Development
 
@@ -12,4 +15,4 @@
 
 #### Start Test Server
 1. `gulp karma` - inject bower deps into karma.conf
-2. `karma start` - run all tests, rerun when files change
+1. `karma start` - run all tests, rerun when files change

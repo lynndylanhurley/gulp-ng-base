@@ -28,7 +28,12 @@
     "karma-stylus-preprocessor": "0.0.1",
     "karma-ng-jade2js-preprocessor": "~0.1.1",
     "karma-html2js-preprocessor": "~0.1.0",
-    "js-yaml": "~3.0.2"
+    "js-yaml": "~3.0.2",
+    "gulp-if": "0.0.5",
+    "canvas": "~1.1.3",
+    "css-sprite": "~0.7.0-beta2",
+    "nib": "~1.0.2",
+    "gulp-stylus": "~0.1.0"
   },
   "engines": {
     "node": ">=0.10.0"

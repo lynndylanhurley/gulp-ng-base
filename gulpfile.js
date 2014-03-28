@@ -3,15 +3,14 @@
 
 var gulp    = require('gulp');
 var wiredep = require('wiredep').stream;
+var sprite  = require('css-sprite').stream;
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
 
-
-
 // Styles
 gulp.task('styles', function () {
-  return gulp.src('app/styles/main.scss')
+  return gulp.src('app/styles/deps.scss')
     .pipe($.rubySass({
       style: 'expanded',
       loadPath: ['app/bower_components']
@@ -24,6 +23,18 @@ gulp.task('styles', function () {
     .pipe(gulp.dest('dist/styles'))
     .pipe($.size());
 });
+
+gulp.task('stylus', function() {
+  return gulp.src(['app/styles/**/*.styl'])
+    .pipe($.changed('dist/styles'))
+    .pipe($.stylus({
+      set: ['compress'],
+      use: ['nib'],
+      import: ['nib']
+    }))
+    .pipe(gulp.dest('dist/styles'))
+    .pipe($.size());
+})
 
 // JS
 gulp.task('js', function () {
@@ -89,13 +100,27 @@ gulp.task('images', function () {
     .pipe($.size());
 });
 
+// Sprites
+gulp.task('sprites', function() {
+  return gulp.src('app/images/sprites/**/*.png')
+    .pipe(sprite({
+      name:      'sprite.png',
+      style:     'sprite.styl',
+      cssPath:   '/images',
+      processor: 'stylus'
+    }))
+    .pipe($.if('*.png', gulp.dest('dist/images')))
+    .pipe($.if('*.styl', gulp.dest('app/styles')))
+    .pipe($.size());
+});
+
 // Clean
 gulp.task('clean', function () {
-  return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {read: false}).pipe($.clean());
+  return gulp.src(['dist/styles', 'dist/scripts', 'dist/images', 'dist/*.*'], {read: false}).pipe($.clean());
 });
 
 // Bundle
-gulp.task('bundle', ['templates', 'styles', 'coffee', 'js'], $.bundle('./app/*.html'));
+gulp.task('bundle', ['templates', 'sprites', 'styles', 'stylus', 'coffee', 'js'], $.bundle('./app/*.html'));
 
 // Build
 gulp.task('build', ['html', 'bundle', 'images']);
@@ -154,6 +179,12 @@ gulp.task('watch', ['bundle', 'karma', 'connect'], function () {
   // Watch .scss files
   gulp.watch('app/styles/**/*.scss', ['styles']);
 
+  // Watch .styl files
+  gulp.watch('app/styles/**/*.styl', ['stylus']);
+
+  // Watch sprites
+  gulp.watch('app/images/sprites/**/*.png', ['sprites', 'stylus']);
+
   // Watch .js files
   gulp.watch('app/scripts/**/*.js', ['js']);
 
@@ -172,7 +203,9 @@ gulp.task('watch', ['bundle', 'karma', 'connect'], function () {
 });
 
 // TODO:
-// [ ] sprites
-// [ ] stylus
+// [x] sprites
+// [x] stylus
+// [x] changed
+// [x] cached
 // [ ] s3
 // [ ] deploy
