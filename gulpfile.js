@@ -4,12 +4,13 @@
 var gulp    = require('gulp');
 var wiredep = require('wiredep').stream;
 var sprite  = require('css-sprite').stream;
+var config  = require('config')
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
 
-// Styles
-gulp.task('styles', function () {
+// Sass
+gulp.task('sass', function () {
   return gulp.src('app/styles/deps.scss')
     .pipe($.rubySass({
       style: 'expanded',
@@ -24,6 +25,7 @@ gulp.task('styles', function () {
     .pipe($.size());
 });
 
+// Stylus
 gulp.task('stylus', function() {
   return gulp.src(['app/styles/**/*.styl'])
     .pipe($.changed('dist/styles'))
@@ -41,10 +43,24 @@ gulp.task('js', function () {
   return gulp.src('app/scripts/**/*.js')
     .pipe($.jshint('.jshintrc'))
     .pipe($.jshint.reporter('default'))
+    .pipe(gulp.dest('dist/scripts'))
     .pipe($.size());
 });
 
-// Coffeescript
+// Bower
+gulp.task('bowerjs', function() {
+  return gulp.src('app/bower_components/**/*.js')
+    .pipe(gulp.dest('dist/bower_components'))
+    .pipe($.size());
+});
+
+gulp.task('bowercss', function() {
+  return gulp.src('app/bower_components/**/*.css')
+    .pipe(gulp.dest('dist/bower_components'))
+    .pipe($.size());
+});
+
+// CoffeeScript
 gulp.task('coffee', function() {
   return gulp.src('app/scripts/**/*.coffee')
     .pipe($.changed('dist/scripts'))
@@ -54,22 +70,73 @@ gulp.task('coffee', function() {
     .pipe($.size());
 });
 
-// HTML
-gulp.task('html', function () {
-  return gulp.src('app/*.html')
+// useref
+gulp.task('useref', ['bundle', 'images'], function () {
+  $.util.log('running useref');
+  var jsFilter = $.filter('dist/**/*.js');
+  var cssFilter = $.filter('dist/**/*.css');
+
+  return gulp.src('dist/*.html')
+    .pipe($.useref.assets())
+    .pipe(jsFilter)
+    .pipe($.uglify())
+    .pipe(jsFilter.restore())
+    .pipe(cssFilter)
+    .pipe($.minifyCss())
+    .pipe(cssFilter.restore())
+    .pipe($.useref.restore())
     .pipe($.useref())
+    .pipe(gulp.dest('dist'))
+    .pipe($.size());
+});
+
+// Version files
+gulp.task('version', ['useref'], function() {
+  return gulp.src([
+    'dist/styles/**/*.css',
+    'dist/scripts/**/*.js',
+    'dist/images/**/*.*'
+  ], {base: 'dist'})
+    .pipe(gulp.dest('dist'))
+    .pipe($.rev())
+    .pipe(gulp.dest('dist'))
+    .pipe($.rev.manifest())
+    .pipe(gulp.dest('dist'))
+    .pipe($.size());
+});
+
+gulp.task('replace', ['version'], function() {
+  var manifest = require('./dist/rev-manifest');
+
+  var patterns = []
+  for (var k in manifest) {
+    patterns.push({
+      match: k,
+      replacement: manifest[k]
+    });
+  };
+
+  $.util.log('replaceTask', $.replaceTask);
+  $.util.log('patterns', patterns);
+
+  return gulp.src([
+    'dist/styles/**/*.css',
+    'dist/*.html'
+  ], {base: 'dist'})
+    .pipe($.replaceTask({
+      patterns: patterns,
+      usePrefix: false
+    }))
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });
 
 // Jade to HTML
 gulp.task('templates', function() {
-  var LOCALS = {};
-
   return gulp.src('./app/*.jade')
     .pipe($.changed('dist'))
     .pipe($.jade({
-      locals: LOCALS
+      pretty: true
     }))
     .pipe(wiredep({
       directory: 'app/bower_components',
@@ -114,16 +181,34 @@ gulp.task('sprites', function() {
     .pipe($.size());
 });
 
+// Deployment
+gulp.task('s3', function() {
+  var envName = (process.env.NODE_ENV || 'development').toLowerCase();
+  var publisher = $.awspublish.create({
+    key:    config.AWS_KEY,
+    secret: config.AWS_SECRET,
+    bucket: 'defsynth-'+envName
+  });
+
+  return gulp.src('dist/**/*')
+    .pipe($.awspublish.gzip({ext: '.gz'}))
+    .pipe(publisher.publish())
+    .pipe(publisher.cache())
+    .pipe($.awspublish.reporter());
+});
+
 // Clean
 gulp.task('clean', function () {
-  return gulp.src(['dist/styles', 'dist/scripts', 'dist/images', 'dist/*.*'], {read: false}).pipe($.clean());
+  return gulp.src(['dist/*', 'dist/**/*.*'], {read: false}).pipe($.clean());
 });
 
 // Bundle
-gulp.task('bundle', ['templates', 'sprites', 'styles', 'stylus', 'coffee', 'js'], $.bundle('./app/*.html'));
+gulp.task('bundle', ['templates', 'sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss'], function() {
+  $.util.log('running bundle');
+});
 
 // Build
-gulp.task('build', ['html', 'bundle', 'images']);
+gulp.task('build', ['replace']);
 
 // Default task
 gulp.task('default', ['clean'], function () {
@@ -140,7 +225,6 @@ gulp.task('connect', $.connect.server({
 
 // Tests (start with `karma start`)
 gulp.task('karma', function() {
-
   // inject bower deps into karma config
   var deps = require('wiredep')({
     directory: 'app/bower_components',
@@ -177,7 +261,7 @@ gulp.task('watch', ['bundle', 'karma', 'connect'], function () {
   });
 
   // Watch .scss files
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch('app/styles/**/*.scss', ['sass']);
 
   // Watch .styl files
   gulp.watch('app/styles/**/*.styl', ['stylus']);
@@ -199,7 +283,7 @@ gulp.task('watch', ['bundle', 'karma', 'connect'], function () {
   gulp.watch('app/images/**/*', ['images']);
 
   // Watch bower files
-  gulp.watch('app/bower_components/*', ['karma', 'templates', 'styles']);
+  gulp.watch('app/bower_components/*', ['karma', 'templates', 'sass']);
 });
 
 // TODO:
@@ -207,5 +291,10 @@ gulp.task('watch', ['bundle', 'karma', 'connect'], function () {
 // [x] stylus
 // [x] changed
 // [x] cached
-// [ ] s3
+// [x] config files
+// [x] minify
+// [ ] add ref to cdn url in build
+// [x] bust caches
+// [x] s3
 // [ ] deploy
+// [ ] mocha
