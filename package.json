@@ -1,7 +1,11 @@
 {
   "name": "defsynth-site",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "gulp": "~3.5.0",
+    "gulp-load-plugins": "~0.3.0",
+    "gulp-connect": "~1.0.0"
+  },
   "devDependencies": {
     "gulp": "~3.5.0",
     "gulp-load-plugins": "~0.3.0",

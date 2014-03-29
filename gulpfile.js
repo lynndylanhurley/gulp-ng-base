@@ -157,16 +157,17 @@ gulp.task('version', ['useref'], function() {
     '.tmp/scripts/**/*.js',
     '.tmp/images/**/*.*'
   ], {base: '.tmp'})
+    .pipe(gulp.dest('.tmp'))
     .pipe($.rev())
     .pipe(gulp.dest('dist'))
     .pipe($.rev.manifest())
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('.tmp'))
     .pipe($.size());
 });
 
 // Update file version refs
 gulp.task('replace', ['version'], function() {
-  var manifest = require('./dist/rev-manifest');
+  var manifest = require('./.tmp/rev-manifest');
 
   var patterns = []
   for (var k in manifest) {
@@ -176,10 +177,12 @@ gulp.task('replace', ['version'], function() {
     });
   };
 
+  console.log('patterns', patterns);
+
   return gulp.src([
-    'dist/styles/**/*.css',
-    'dist/*.html'
-  ], {base: 'dist'})
+    //'dist/styles/**/*.css',
+    '.tmp/*.html'
+  ])
     .pipe($.replaceTask({
       patterns: patterns,
       usePrefix: false
@@ -191,7 +194,7 @@ gulp.task('replace', ['version'], function() {
 // CDNize
 gulp.task('cdnize', ['replace'], function() {
   return gulp.src([
-    '.tmp/*.html'
+    'dist/*.html'
   ])
     .pipe($.cdnizer({
       defaultCDNBase: config.STATIC_URL,
@@ -245,7 +248,7 @@ gulp.task('default', ['clean'], function () {
 // Connect
 gulp.task('connect', $.connect.server({
   root: ['dist', '.tmp'],
-  port: 9000,
+  port: process.env.PORT || 9000,
   livereload: true
 }));
 
@@ -320,7 +323,7 @@ gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
 // [x] cached
 // [x] config files
 // [x] minify
-// [ ] add ref to cdn url in build
+// [x] add ref to cdn url in build
 // [x] bust caches
 // [x] s3
 // [ ] deploy
