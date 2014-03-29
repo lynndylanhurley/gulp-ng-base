@@ -188,6 +188,21 @@ gulp.task('replace', ['version'], function() {
     .pipe($.size());
 });
 
+// CDNize
+gulp.task('cdnize', ['replace'], function() {
+  return gulp.src([
+    '.tmp/*.html'
+  ])
+    .pipe($.cdnizer({
+      defaultCDNBase: config.STATIC_URL,
+      allowRev: true,
+      allowMin: true,
+      files: ['**/*.*']
+    }))
+    .pipe(gulp.dest('dist'))
+    .pipe($.size());
+})
+
 
 // Deployment
 gulp.task('s3', function() {
@@ -201,6 +216,7 @@ gulp.task('s3', function() {
   return gulp.src('dist/**/*')
     .pipe($.awspublish.gzip({ext: '.gz'}))
     .pipe(publisher.publish())
+    .pipe(publisher.sync())
     .pipe(publisher.cache())
     .pipe($.awspublish.reporter());
 });
@@ -214,7 +230,12 @@ gulp.task('clean', function () {
 gulp.task('transpile', ['templates', 'sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss']);
 
 // Build
-gulp.task('build', ['replace']);
+gulp.task('build', ['cdnize']);
+
+// Deploy
+gulp.task('deploy', ['build'], function() {
+  gulp.start('s3');
+})
 
 // Default task
 gulp.task('default', ['clean'], function () {
