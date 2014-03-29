@@ -1,11 +1,14 @@
 'use strict';
 // Generated on 2014-03-18 using generator-gulp-webapp 0.0.4
 
-var gulp    = require('gulp');
-var wiredep = require('wiredep').stream;
-var sprite  = require('css-sprite').stream;
-var config  = require('config');
-var cached = require('gulp-cached');
+var gulp = require('gulp');
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  var wiredep = require('wiredep').stream;
+  var sprite  = require('css-sprite').stream;
+  var config  = require('config');
+  var cached  = require('gulp-cached');
+}
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
