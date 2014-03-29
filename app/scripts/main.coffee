@@ -1,1 +1,1 @@
-console.log 'bang xxxx'
+console.log 'bang xxx'
