@@ -7,8 +7,8 @@ html.no-js
     meta(name='viewport', content='width=device-width')
     // Place favicon.ico and apple-touch-icon.png in the root directory
     // build:css /styles/main.css
-    link(rel='stylesheet', href='/styles/deps.css')
-    link(rel='stylesheet', href='/styles/main.css')
+    // inject:css
+    // endinject
     // endbuild
 
     // build:js /scripts/vendor/modernizr.js
@@ -85,5 +85,6 @@ html.no-js
     // endbuild
 
     // build:js /scripts/main.js
-    script(src='/scripts/main.js')
+    // inject:js
+    // endinject
     // endbuild
