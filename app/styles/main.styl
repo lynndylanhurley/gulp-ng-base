@@ -1,5 +1,25 @@
 @import 'sprite'
 
+footer-height = 100px
+
+// sticky footer
+html, body
+  height 100%
+
+  .container
+    min-height 100%
+    margin-bottom -(footer-height)
+
+    &:after
+      content ""
+      display block
+      height footer-height
+
+  #footer
+    height footer-height
+    border-top dashed #666 1px
+
+
 .browsehappy
   margin 0.2em 0
   background #ccc
@@ -13,7 +33,7 @@ body
 
 .header,
 .marketing,
-.footer
+#footer
   padding-left 15px
   padding-right 15px
 
@@ -31,7 +51,7 @@ body
     padding-bottom 19px
     margin-bottom 30px
 
-.footer
+#footer
   padding-top 19px
   color #777
   border-top 1px solid #e5e5e5
@@ -59,7 +79,7 @@ body
 
   .header,
   .marketing,
-  .footer
+  #footer
     padding-left 0
     padding-right 0
 
