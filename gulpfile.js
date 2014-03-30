@@ -1,14 +1,11 @@
 'use strict';
 // Generated on 2014-03-18 using generator-gulp-webapp 0.0.4
 
-var gulp = require('gulp');
-
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  var wiredep = require('wiredep').stream;
-  var sprite  = require('css-sprite').stream;
-  var config  = require('config');
-  var cached  = require('gulp-cached');
-}
+var gulp    = require('gulp');
+var wiredep = require('wiredep').stream;
+var sprite  = require('css-sprite').stream;
+var config  = require('config');
+var cached  = require('gulp-cached');
 
 // Load plugins
 var $ = require('gulp-load-plugins')();
@@ -168,8 +165,14 @@ gulp.task('version', ['useref'], function() {
     .pipe($.size());
 });
 
+gulp.task('copy', ['version'], function() {
+  return gulp.src(['.tmp/*.html'])
+    .pipe(gulp.dest('dist'))
+    .pipe($.size());
+})
+
 // Update file version refs
-gulp.task('replace', ['version'], function() {
+gulp.task('replace', ['copy'], function() {
   var manifest = require('./.tmp/rev-manifest');
 
   var patterns = []
@@ -183,9 +186,9 @@ gulp.task('replace', ['version'], function() {
   console.log('patterns', patterns);
 
   return gulp.src([
-    //'dist/styles/**/*.css',
-    '.tmp/*.html'
-  ])
+    'dist/styles/**/*.css',
+    'dist/*.html'
+  ], {base: 'dist'})
     .pipe($.replaceTask({
       patterns: patterns,
       usePrefix: false
@@ -197,8 +200,9 @@ gulp.task('replace', ['version'], function() {
 // CDNize
 gulp.task('cdnize', ['replace'], function() {
   return gulp.src([
-    'dist/*.html'
-  ])
+    'dist/*.html',
+    'dist/styles/**/*.css'
+  ], {base: 'dist'})
     .pipe($.cdnizer({
       defaultCDNBase: config.STATIC_URL,
       allowRev: true,
@@ -213,6 +217,9 @@ gulp.task('cdnize', ['replace'], function() {
 // Deployment
 gulp.task('s3', function() {
   var envName = (process.env.NODE_ENV || 'development').toLowerCase();
+  var headers = {
+    'Cache-Control': 'max-age=315360000, no-transform, public'
+  };
   var publisher = $.awspublish.create({
     key:    config.AWS_KEY,
     secret: config.AWS_SECRET,
@@ -220,10 +227,10 @@ gulp.task('s3', function() {
   });
 
   return gulp.src('dist/**/*')
-    .pipe($.awspublish.gzip({ext: '.gz'}))
-    .pipe(publisher.publish())
+    .pipe($.awspublish.gzip())
+    .pipe(publisher.publish(headers))
     .pipe(publisher.sync())
-    .pipe(publisher.cache())
+    //.pipe(publisher.cache())
     .pipe($.awspublish.reporter());
 });
 
@@ -250,7 +257,7 @@ gulp.task('default', ['clean'], function () {
 
 // Connect
 gulp.task('connect', $.connect.server({
-  root: ['dist', '.tmp'],
+  root: ['.tmp'],
   port: process.env.PORT || 9000,
   livereload: true
 }));
