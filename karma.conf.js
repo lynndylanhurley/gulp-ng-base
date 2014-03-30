@@ -21,12 +21,23 @@ module.exports = function(config) {
       "app/bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap.js",
       "app/bower_components/angular/angular.js",
       "app/bower_components/angular-ui-router/release/angular-ui-router.js",
+      "app/bower_components/bootstrap/dist/js/bootstrap.js",
+      "app/bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js",
+      "app/bower_components/autotype/index.js",
+      "app/bower_components/bootstrap-timepicker/js/bootstrap-timepicker.min.js",
+      "app/bower_components/bootstrap-select/bootstrap-select.js",
+      "app/bower_components/angular-strap/dist/angular-strap.min.js",
       // endbower
 
       // bower:css
+      "app/bower_components/bootstrap/dist/css/bootstrap.css",
+      "app/bower_components/bootstrap-datepicker/css/datepicker.css",
+      "app/bower_components/bootstrap-datepicker/css/datepicker3.css",
+      "app/bower_components/bootstrap-timepicker/css/bootstrap-timepicker.min.css",
+      "app/bower_components/bootstrap-select/bootstrap-select.css",
       // endbower
 
-      'test/**/*.coffee'
+      'test/unit/**/*.coffee'
     ],
 
 
@@ -44,7 +55,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/**/*.coffee': 'coffee'
+      'test/unit/**/*.coffee': 'coffee'
     },
 
     coffeePreprocessor: {

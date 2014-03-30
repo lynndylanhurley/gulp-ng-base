@@ -49,7 +49,9 @@
     "chai": "~1.9.1",
     "karma-chai": "~0.1.0",
     "sinon": "~1.9.0",
-    "karma-sinon": "~1.0.3"
+    "karma-sinon": "~1.0.3",
+    "protractor": "~0.20.1",
+    "chai-as-promised": "~4.1.1"
   },
   "engines": {
     "node": ">=0.10.0"
