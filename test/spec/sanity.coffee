@@ -1,8 +1,8 @@
 describe 'testing coffee specs', ->
   it 'should be sane', ->
-    expect(1).toEqual(1)
+    expect(1).to.equal(1)
 
 
 describe 'testing angular deps', ->
   it 'should define angular', ->
-    expect(angular).toBeDefined()
+    expect(angular).to.not.equal(undefined)

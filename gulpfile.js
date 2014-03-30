@@ -7,7 +7,6 @@ var sprite  = require('css-sprite').stream;
 var config  = require('config');
 var cached  = require('gulp-cached');
 
-
 // for deployment
 var env     = (process.env.NODE_ENV || 'development').toLowerCase();
 var tag     = env + '-' + new Date().getTime();
@@ -359,5 +358,6 @@ gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
 // [x] add ref to cdn url in build
 // [x] bust caches
 // [x] s3
-// [ ] deploy
+// [x] deploy
 // [ ] mocha
+// [ ] add suspport server scripts
