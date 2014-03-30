@@ -252,7 +252,7 @@ gulp.task('push', ['s3'], function() {
     //'echo  '+tag+' '+env+' '+distDir,
   //]);
 
-  $.shell.task([
+  return $.shell.task([
     'git checkout -b '+tag,
     'mv dist '+distDir,
     'git add -u .',
