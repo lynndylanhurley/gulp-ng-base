@@ -342,6 +342,7 @@ gulp.task('dev', ['html2js'], function () {
     '.tmp/*.html',
     '.tmp/styles/**/*.css',
     '.tmp/scripts/**/*.js',
+    '.tmp/views/**/*.js',
     '.tmp/images/**/*.*'
   ], function(event) {
     $.util.log('@-->caught live reload event', event.path);
@@ -367,7 +368,7 @@ gulp.task('dev', ['html2js'], function () {
 
   // Watch .jade files
   gulp.watch('app/**/*.jade', ['templates']);
-  gulp.watch('app/views/**/*.html', ['jstemplates']);
+  gulp.watch('.tmp/views/**/*.html', ['jstemplates']);
 
   // Watch image files
   //gulp.watch('app/images/**/*', ['images']);
@@ -399,4 +400,5 @@ gulp.task('dev', ['html2js'], function () {
 // [ ] main controller
 
 // css
-// [ ] sticky footer
+// [x] sticky footer
+// [ ] style guide
