@@ -58,7 +58,11 @@
     "connect-livereload": "~0.3.2",
     "tiny-lr": "0.0.5",
     "gulp-livereload": "~1.2.0",
-    "gulp-nodemon": "~1.0.2"
+    "gulp-nodemon": "~1.0.2",
+    "crypto": "0.0.3",
+    "http-proxy": "~1.0.3",
+    "request": "~2.34.0",
+    "gulp-ng-html2js": "~0.1.6"
   },
   "engines": {
     "node": ">=0.10.0"

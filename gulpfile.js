@@ -74,7 +74,7 @@ gulp.task('coffee', function() {
 
 // Jade to HTML
 gulp.task('templates', function() {
-  return gulp.src('app/*.jade')
+  return gulp.src('app/**/*.jade')
     .pipe(cached('templates'))
     .pipe($.changed('.tmp'))
     .pipe($.jade({
@@ -87,7 +87,9 @@ gulp.task('templates', function() {
     .pipe($.inject(
       gulp.src(
         [
+          '.tmp/views/**/*.js',
           '.tmp/scripts/**/*.js',
+          '!.tmp/scripts/vendor/*.js',
           '.tmp/styles/**/*.css'
         ],
         {read: false}
@@ -103,10 +105,10 @@ gulp.task('templates', function() {
 
 // Jade to JS
 gulp.task('jstemplates', function() {
-  gulp.src('app/views/**/*.jade')
+  return gulp.src('.tmp/views/**/*.html')
     .pipe(cached('jstemplates'))
-    .pipe($.jade({
-      client: true
+    .pipe($.ngHtml2js({
+      moduleName: 'defsynthPartials'
     }))
     .pipe(gulp.dest('.tmp/views'));
 });
@@ -206,8 +208,6 @@ gulp.task('replace', ['copy'], function() {
     });
   };
 
-  console.log('patterns', patterns);
-
   return gulp.src([
     'dist/styles/**/*.css',
     'dist/*.html'
@@ -283,6 +283,10 @@ gulp.task('inject', ['transpile'], function() {
   gulp.start('templates');
 });
 
+gulp.task('html2js', ['inject'], function() {
+  gulp.start('jstemplates')
+});
+
 // Build
 gulp.task('build', ['cdnize']);
 
@@ -316,7 +320,7 @@ gulp.task('test:e2e', ['protractor'], function() {
 
 
 // Watch
-gulp.task('dev', ['inject'], function () {
+gulp.task('dev', ['html2js'], function () {
   var lr      = require('tiny-lr')();
   var nodemon = require('gulp-nodemon');
 
@@ -362,8 +366,8 @@ gulp.task('dev', ['inject'], function () {
   gulp.watch('app/scripts/**/*.coffee', ['coffee']);
 
   // Watch .jade files
-  gulp.watch('app/*.jade', ['templates']);
-  gulp.watch('app/views/**/*.jade', ['jstemplates']);
+  gulp.watch('app/**/*.jade', ['templates']);
+  gulp.watch('app/views/**/*.html', ['jstemplates']);
 
   // Watch image files
   //gulp.watch('app/images/**/*', ['images']);
@@ -375,6 +379,7 @@ gulp.task('dev', ['inject'], function () {
 
 
 // TODO:
+// project/workflow
 // [x] sprites
 // [x] stylus
 // [x] changed
@@ -388,3 +393,10 @@ gulp.task('dev', ['inject'], function () {
 // [x] mocha
 // [x] automatic dependency injection
 // [x] add support server scripts (nodemon?)
+
+// angular
+// [ ] routes + root ui-view
+// [ ] main controller
+
+// css
+// [ ] sticky footer
