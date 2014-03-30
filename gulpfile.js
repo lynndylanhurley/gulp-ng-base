@@ -248,15 +248,19 @@ gulp.task('push', ['s3'], function() {
   $.util.log('tag', tag);
   $.util.log('distDir', distDir);
 
-  $.shell.talk([
+  //$.shell.task([
+    //'echo  '+tag+' '+env+' '+distDir,
+  //]);
+
+  $.shell.task([
     'git checkout -b '+tag,
     'mv dist '+distDir,
     'git add -u .',
     'git add .',
     'git commit -am "commit for '+tag+' push"',
-    'git push -f '+env+' '+tag+':master',
-    'git checkout master',
-    'git branch -D '+tag
+    'git push -f '+env+' '+tag+':master'
+    //'git checkout master',
+    //'git branch -D '+tag
   ]);
 });
 
