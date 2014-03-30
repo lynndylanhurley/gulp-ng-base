@@ -7,6 +7,7 @@ var expect = chai.expect;
 describe('testing sanity', function() {
   it('should be sane', function() {
     expect(1).to.equal(1);
+    expect(true).to.equal(true);
   });
 
   describe('protractor library', function() {
@@ -22,6 +23,5 @@ describe('testing sanity', function() {
       browser.get('/');
       expect(browser.getTitle()).to.eventually.equal('defsynth site');
     });
-
   });
 });

@@ -51,7 +51,9 @@
     "sinon": "~1.9.0",
     "karma-sinon": "~1.0.3",
     "protractor": "~0.20.1",
-    "chai-as-promised": "~4.1.1"
+    "chai-as-promised": "~4.1.1",
+    "gulp-protractor": "0.0.7",
+    "phantomjs": "~1.9.7-1"
   },
   "engines": {
     "node": ">=0.10.0"

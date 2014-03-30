@@ -5,7 +5,9 @@ exports.config = {
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'phantomjs',
+    'phantomjs.binary.path': './node_modules/phantomjs/bin/phantomjs',
+    'phantomjs.cli.args': []
   },
 
   // Spec patterns are relative to the current working directly when

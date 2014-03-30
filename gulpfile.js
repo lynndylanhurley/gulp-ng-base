@@ -285,29 +285,22 @@ gulp.task('connect', $.connect.server({
 }));
 
 
-// Tests (start with `karma start`)
-gulp.task('karma', function() {
-  // inject bower deps into karma config
-  var deps = require('wiredep')({
-    directory: 'app/bower_components',
-    //ignorePath: '',
-    src: 'karma.conf.js',
-    fileTypes: {
-      js: {
-        block: /(([ \t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
-        detect: {
-          js: /['"](.+)['"]/gi,
-          css: /['"](.+)['"]/gi
-        },
-        replace: {
-          js: '"{{filePath}}",',
-          css: '"{{filePath}}",',
-        }
-      }
-    }
-  });
+// E2E Proctor tests
+gulp.task('protractor', function() {
+  return gulp.src('test/e2e/**/*.js')
+    .pipe(cached('protractor'))
+    .pipe($.protractor.protractor({
+      configFile: 'protractor.conf.js'
+    }))
+    .on('error', function(e) {
+      $.util.log(e.toString());
+      this.emit('end');
+    });
 });
 
+gulp.task('test:e2e', ['protractor'], function() {
+  gulp.watch('test/e2e/**/*.js', ['protractor']);
+});
 
 // Watch
 gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
