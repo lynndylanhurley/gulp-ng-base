@@ -395,7 +395,7 @@ gulp.task('dev', ['html2js'], function () {
 // [x] add support server scripts (nodemon?)
 
 // angular
-// [ ] routes + root ui-view
+// [x] routes + root ui-view
 // [ ] main controller
 
 // css
