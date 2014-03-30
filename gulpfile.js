@@ -234,6 +234,32 @@ gulp.task('s3', function() {
     .pipe($.awspublish.reporter());
 });
 
+// Push to heroku
+gulp.task('push', ['s3'], function() {
+  var env     = (process.env.NODE_ENV || 'development').toLowerCase();
+  var tag     = env + '-' + new Date().getTime();
+  var distDir = 'dist';
+
+  if (process.env.NODE_ENV) {
+    distDir += '-'+process.env.NODE_ENV.toLowerCase();
+  }
+
+  $.util.log('env', env);
+  $.util.log('tag', tag);
+  $.util.log('distDir', distDir);
+
+  $.shell.talk([
+    'git checkout -b '+tag,
+    'mv dist '+distDir,
+    'git add -u .',
+    'git add .',
+    'git commit -am "commit for '+tag+' push"',
+    'git push -f '+env+' '+tag+':master',
+    'git checkout master',
+    'git branch -D '+tag
+  ]);
+});
+
 // Clean
 gulp.task('clean', function () {
   return gulp.src(['dist/*', '.tmp/*'], {read: false}).pipe($.clean());
@@ -247,7 +273,7 @@ gulp.task('build', ['cdnize']);
 
 // Deploy
 gulp.task('deploy', ['build'], function() {
-  gulp.start('s3');
+  gulp.start('push');
 })
 
 // Default task
