@@ -303,7 +303,7 @@ gulp.task('test:e2e', ['protractor'], function() {
 });
 
 // Watch
-gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
+gulp.task('dev', ['transpile', 'connect'], function () {
   // Watch for changes in `app` folder
   gulp.watch([
     '.tmp/*.html',
