@@ -28,7 +28,18 @@ html.no-js
         | browser. Please
         a(href='http://browsehappy.com/') upgrade your browser
         | to improve your experience.
-    .container(ui-view)
+
+    .container
+      .header
+        ul.nav.nav-pills.pull-right
+          li.active
+            a(ui-sref='index') Home
+          li
+            a(ui-sref='style-guide') Style Guide
+
+        h3.text-muted defsynth site
+
+      div(ui-view)
 
     footer#footer
       p ♥ from the Yeoman team

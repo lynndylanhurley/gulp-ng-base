@@ -1,0 +1,146 @@
+.page-header
+  h1 Style Guide
+
+h2 Headers
+
+h1
+  | This is an h1 header
+  small &nbsp; Secondary Text
+
+h2
+  | This is an h2 header
+  small &nbsp; Secondary Text
+
+h3
+  | This is an h3 header
+  small &nbsp; Secondary Text
+
+h4
+  | This is an h4 header
+  small &nbsp; Secondary Text
+
+h5
+  | This is an h5 header
+  small &nbsp; Secondary Text
+
+h6
+  | This is an h6 header
+  small &nbsp; Secondary Text
+
+h2 Lists
+
+h3 Unordered List
+
+ul
+  li(ng-repeat='item in fakeListContent') {{ item }}
+
+h3 Ordered List
+
+ol
+  li(ng-repeat='item in fakeListContent') {{ item }}
+
+
+h2 Tables
+
+h3 Default Table
+
+table.table.table-hover
+  thead
+    tr
+      th #
+      th First Name
+      th Last Name
+      th Email
+
+  tbody
+    tr(ng-repeat='user in fakeUsers')
+      td {{ $index }}
+      td {{ user.firstName }}
+      td {{ user.lastName }}
+      td {{ user.email }}
+
+
+h3 Striped Table
+
+table.table.table-striped.table-hover
+  thead
+    tr
+      th #
+      th First Name
+      th Last Name
+      th Email
+
+  tbody
+    tr(ng-repeat='user in fakeUsers')
+      td {{ $index }}
+      td {{ user.firstName }}
+      td {{ user.lastName }}
+      td {{ user.email }}
+
+h3 Bordered Table
+
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th #
+      th First Name
+      th Last Name
+      th Email
+
+  tbody
+    tr(ng-repeat='user in fakeUsers')
+      td {{ $index }}
+      td {{ user.firstName }}
+      td {{ user.lastName }}
+      td {{ user.email }}
+
+h3 Contextual Table Items
+
+table.table.table-hover
+  thead
+    tr
+      th Context
+      th First Name
+      th Last Name
+      th Email
+
+  tbody
+    tr
+      td Default
+      td {{ fakeUsers[0].firstName }}
+      td {{ fakeUsers[0].lastName }}
+      td {{ fakeUsers[0].email }}
+
+    tr.active
+      td Active
+      td {{ fakeUsers[1].firstName }}
+      td {{ fakeUsers[1].lastName }}
+      td {{ fakeUsers[1].email }}
+
+    tr.success
+      td Success
+      td {{ fakeUsers[2].firstName }}
+      td {{ fakeUsers[2].lastName }}
+      td {{ fakeUsers[2].email }}
+
+    tr.warning
+      td Warning
+      td {{ fakeUsers[3].firstName }}
+      td {{ fakeUsers[3].lastName }}
+      td {{ fakeUsers[3].email }}
+
+    tr.danger
+      td Danger
+      td {{ fakeUsers[4].firstName }}
+      td {{ fakeUsers[4].lastName }}
+      td {{ fakeUsers[4].email }}
+
+    tr.info
+      td Info
+      td {{ fakeUsers[5].firstName }}
+      td {{ fakeUsers[5].lastName }}
+      td {{ fakeUsers[5].email }}
+
+h2 Forms
+
+
