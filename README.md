@@ -16,3 +16,14 @@
 #### Start Test Server
 1. `gulp karma` - inject bower deps into karma.conf
 1. `karma start` - run all tests, rerun when files change
+
+
+### Testing
+
+Unit tests use karma + mocha. E2E Tests use protractor + mocha.
+
+#### Unit Tests
+`karma start` - runs all tests in `test/unit/**/*.coffee`
+
+#### E2E Tests
+`gulp test:e2e` - runs all tests in `test/e2e/**/*.coffee`

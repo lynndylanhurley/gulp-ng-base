@@ -285,10 +285,10 @@ gulp.task('connect', $.connect.server({
 }));
 
 
-// E2E Proctor tests
+// E2E Protractor tests
 gulp.task('protractor', function() {
-  return gulp.src('test/e2e/**/*.js')
-    .pipe(cached('protractor'))
+  require('coffee-script/register');
+  return gulp.src('test/e2e/**/*.coffee')
     .pipe($.protractor.protractor({
       configFile: 'protractor.conf.js'
     }))
@@ -299,7 +299,7 @@ gulp.task('protractor', function() {
 });
 
 gulp.task('test:e2e', ['protractor'], function() {
-  gulp.watch('test/e2e/**/*.js', ['protractor']);
+  gulp.watch('test/e2e/**/*.coffee', ['protractor']);
 });
 
 // Watch
