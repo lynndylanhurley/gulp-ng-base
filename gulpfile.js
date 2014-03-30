@@ -211,7 +211,7 @@ gulp.task('cdnize', ['replace'], function() {
     }))
     .pipe(gulp.dest('dist'))
     .pipe($.size());
-})
+});
 
 
 // Deployment
