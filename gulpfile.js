@@ -12,7 +12,6 @@ var env             = (process.env.NODE_ENV || 'development').toLowerCase();
 var tag             = env + '-' + new Date().getTime();
 var DIST_DIR        = 'dist';
 var LIVERELOAD_PORT = 35729;
-var EXPRESS_PORT    = process.env.PORT || 9000;
 
 if (process.env.NODE_ENV) {
   DIST_DIR += '-'+process.env.NODE_ENV.toLowerCase();
@@ -316,45 +315,36 @@ gulp.task('test:e2e', ['protractor'], function() {
 });
 
 
-// Express server
-function startExpress() {
-  var express = require('express');
-  var app = express();
-
-  app.use(express.static(__dirname + '/' + DIST_DIR));
-  app.listen(EXPRESS_PORT);
-};
-
-var lr;
-function startLivereload() {
-  lr = require('tiny-lr')();
-  lr.listen(LIVERELOAD_PORT);
-}
-
-function notifyLivereload(event) {
-  var fileName = require('path').relative(__dirname, event.path);
-
-  lr.changed({
-    body: {
-      files: [fileName]
-    }
-  })
-}
-
-
 // Watch
 gulp.task('dev', ['inject'], function () {
-  // start server
-  startExpress();
-  startLivereload();
+  var lr      = require('tiny-lr')();
+  var nodemon = require('gulp-nodemon');
 
-  // Watch for changes in `app` folder
+  // start node server
+  $.nodemon({
+    script: 'app.js',
+    ext: 'html js',
+    ignore: []
+  })
+    .on('restart', function() {
+      console.log('restarted');
+    });
+
+  // start livereload server
+  lr.listen(LIVERELOAD_PORT);
+
+  // Watch for changes in .tmp folder
   gulp.watch([
     '.tmp/*.html',
     '.tmp/styles/**/*.css',
     '.tmp/scripts/**/*.js',
     '.tmp/images/**/*.*'
-  ], notifyLivereload);
+  ], function(event) {
+    $.util.log('@-->caught live reload event', event.path);
+
+    gulp.src(event.path, {read: false})
+      .pipe($.livereload(lr));
+  });
 
   // Watch .scss files
   gulp.watch('app/styles/**/*.scss', ['sass']);
@@ -397,4 +387,4 @@ gulp.task('dev', ['inject'], function () {
 // [x] deploy
 // [x] mocha
 // [x] automatic dependency injection
-// [ ] add support server scripts (nodemon?)
+// [x] add support server scripts (nodemon?)

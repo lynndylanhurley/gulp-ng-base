@@ -56,7 +56,9 @@
     "phantomjs": "~1.9.7-1",
     "gulp-inject": "~0.4.1",
     "connect-livereload": "~0.3.2",
-    "tiny-lr": "0.0.5"
+    "tiny-lr": "0.0.5",
+    "gulp-livereload": "~1.2.0",
+    "gulp-nodemon": "~1.0.2"
   },
   "engines": {
     "node": ">=0.10.0"
