@@ -8,12 +8,14 @@ var config  = require('config');
 var cached  = require('gulp-cached');
 
 // for deployment
-var env     = (process.env.NODE_ENV || 'development').toLowerCase();
-var tag     = env + '-' + new Date().getTime();
-var distDir = 'dist';
+var env             = (process.env.NODE_ENV || 'development').toLowerCase();
+var tag             = env + '-' + new Date().getTime();
+var DIST_DIR        = 'dist';
+var LIVERELOAD_PORT = 35729;
+var EXPRESS_PORT    = process.env.PORT || 9000;
 
 if (process.env.NODE_ENV) {
-  distDir += '-'+process.env.NODE_ENV.toLowerCase();
+  DIST_DIR += '-'+process.env.NODE_ENV.toLowerCase();
 }
 
 // Load plugins
@@ -83,6 +85,19 @@ gulp.task('templates', function() {
       directory: 'app/bower_components',
       ignorePath: 'app/'
     }))
+    .pipe($.inject(
+      gulp.src(
+        [
+          '.tmp/scripts/**/*.js',
+          '.tmp/styles/**/*.css'
+        ],
+        {read: false}
+      ), {
+        ignorePath: ['.tmp'],
+        starttag: '<!-- inject:{{ext}}-->',
+        endtag: '<!-- endinject-->'
+      }
+    ))
     .pipe(gulp.dest('.tmp'))
     .pipe($.size());
 });
@@ -113,7 +128,7 @@ gulp.task('images', function () {
 gulp.task('stylus', ['sprites'], function() {
   return gulp.src(['app/styles/**/*.styl'])
     .pipe(cached('stylus'))
-    .pipe($.changed('.tmp/styles'))
+    //.pipe($.changed('.tmp/styles'))
     .pipe($.stylus({
       paths: ['app/styles', '.tmp/styles'],
       set: ['compress'],
@@ -246,14 +261,14 @@ gulp.task('s3', function() {
 // Push to heroku
 gulp.task('push', ['s3'], $.shell.task([
   'git checkout -b '+tag,
-  'cp -R dist '+distDir,
+  'cp -R dist '+DIST_DIR,
   'git add -u .',
   'git add .',
   'git commit -am "commit for '+tag+' push"',
   'git push -f '+env+' '+tag+':master',
   'git checkout master',
   'git branch -D '+tag,
-  'rm -rf '+distDir
+  'rm -rf '+DIST_DIR
 ]));
 
 // Clean
@@ -262,7 +277,12 @@ gulp.task('clean', function () {
 });
 
 // Transpile
-gulp.task('transpile', ['templates', 'sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss']);
+gulp.task('transpile', ['sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss']);
+
+// Inject
+gulp.task('inject', ['transpile'], function() {
+  gulp.start('templates');
+});
 
 // Build
 gulp.task('build', ['cdnize']);
@@ -276,13 +296,6 @@ gulp.task('deploy', ['build'], function() {
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
-
-// Connect
-gulp.task('connect', $.connect.server({
-  root: ['.tmp'],
-  port: process.env.PORT || 9000,
-  livereload: true
-}));
 
 
 // E2E Protractor tests
@@ -302,18 +315,46 @@ gulp.task('test:e2e', ['protractor'], function() {
   gulp.watch('test/e2e/**/*.coffee', ['protractor']);
 });
 
+
+// Express server
+function startExpress() {
+  var express = require('express');
+  var app = express();
+
+  app.use(express.static(__dirname + '/' + DIST_DIR));
+  app.listen(EXPRESS_PORT);
+};
+
+var lr;
+function startLivereload() {
+  lr = require('tiny-lr')();
+  lr.listen(LIVERELOAD_PORT);
+}
+
+function notifyLivereload(event) {
+  var fileName = require('path').relative(__dirname, event.path);
+
+  lr.changed({
+    body: {
+      files: [fileName]
+    }
+  })
+}
+
+
 // Watch
-gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
+gulp.task('dev', ['inject'], function () {
+  // start server
+  startExpress();
+  startLivereload();
+
   // Watch for changes in `app` folder
   gulp.watch([
     '.tmp/*.html',
     '.tmp/styles/**/*.css',
     '.tmp/scripts/**/*.js',
     '.tmp/images/**/*.*'
-  ], function(event) {
-    return gulp.src(event.path)
-      .pipe($.connect.reload());
-  });
+  ], notifyLivereload);
 
   // Watch .scss files
   gulp.watch('app/styles/**/*.scss', ['sass']);
@@ -341,6 +382,8 @@ gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
   gulp.watch('app/bower_components/*', ['bowerjs', 'bowercss']);
 });
 
+
+
 // TODO:
 // [x] sprites
 // [x] stylus
@@ -352,5 +395,6 @@ gulp.task('dev', ['transpile', 'karma', 'connect'], function () {
 // [x] bust caches
 // [x] s3
 // [x] deploy
-// [ ] mocha
-// [ ] add suspport server scripts
+// [x] mocha
+// [x] automatic dependency injection
+// [ ] add support server scripts (nodemon?)
