@@ -7,6 +7,16 @@ var sprite  = require('css-sprite').stream;
 var config  = require('config');
 var cached  = require('gulp-cached');
 
+
+// for deployment
+var env     = (process.env.NODE_ENV || 'development').toLowerCase();
+var tag     = env + '-' + new Date().getTime();
+var distDir = 'dist';
+
+if (process.env.NODE_ENV) {
+  distDir += '-'+process.env.NODE_ENV.toLowerCase();
+}
+
 // Load plugins
 var $ = require('gulp-load-plugins')();
 
@@ -235,34 +245,16 @@ gulp.task('s3', function() {
 });
 
 // Push to heroku
-gulp.task('push', ['s3'], function() {
-  var env     = (process.env.NODE_ENV || 'development').toLowerCase();
-  var tag     = env + '-' + new Date().getTime();
-  var distDir = 'dist';
-
-  if (process.env.NODE_ENV) {
-    distDir += '-'+process.env.NODE_ENV.toLowerCase();
-  }
-
-  $.util.log('env', env);
-  $.util.log('tag', tag);
-  $.util.log('distDir', distDir);
-
-  //$.shell.task([
-    //'echo  '+tag+' '+env+' '+distDir,
-  //]);
-
-  return $.shell.task([
-    'git checkout -b '+tag,
-    'mv dist '+distDir,
-    'git add -u .',
-    'git add .',
-    'git commit -am "commit for '+tag+' push"',
-    'git push -f '+env+' '+tag+':master'
-    //'git checkout master',
-    //'git branch -D '+tag
-  ]);
-});
+gulp.task('push', ['s3'], $.shell.task([
+  'git checkout -b '+tag,
+  'mv dist '+distDir,
+  'git add -u .',
+  'git add .',
+  'git commit -am "commit for '+tag+' push"',
+  'git push -f '+env+' '+tag+':master'
+  //'git checkout master',
+  //'git branch -D '+tag
+]));
 
 // Clean
 gulp.task('clean', function () {
