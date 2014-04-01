@@ -3,7 +3,11 @@ angular.module('defsynthApp', [
   'mgcrea.ngStrap'
   'defsynthPartials'
 ])
-  .config ($stateProvider, $urlRouterProvider, $locationProvider) ->
+  .config ($stateProvider, $urlRouterProvider, $locationProvider, $sceProvider) ->
+    # disable sce
+    # TODO: FIX
+    $sceProvider.enabled(false)
+
     # push-state routes
     $locationProvider.html5Mode(true)
 

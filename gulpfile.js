@@ -64,8 +64,11 @@ gulp.task('bowercss', function() {
 
 // TODO: what a mess. maybe move all fonts into one dir?
 gulp.task('bower-fonts', function() {
-  return gulp.src('app/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/*.*')
-    .pipe(gulp.dest('.tmp/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap'))
+  return gulp.src([
+    'app/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/*.*',
+    'app/bower_components/font-awesome/fonts/*.*'
+  ])
+    .pipe(gulp.dest('.tmp/fonts'))
     .pipe($.size());
 })
 

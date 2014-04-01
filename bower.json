@@ -10,7 +10,9 @@
     "angular-strap": "2.0.0-rc.4",
     "Faker": "~0.7.0",
     "lodash": "~2.4.1",
-    "angular-motion": "~0.3.2"
+    "angular-motion": "~0.3.2",
+    "bootstrap-additions": "~0.2.2",
+    "font-awesome": "~4.0.3"
   },
   "devDependencies": {},
   "overrides": {

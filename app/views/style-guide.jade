@@ -384,7 +384,9 @@ h3 Image shapes
   | &nbsp;
   img.img-thumbnail(src="http://placehold.it/150x150")
 
-h2 Components
+h2
+  | Components&nbsp;
+  small (rely on javascript)
 
 h3 Modals
 
@@ -395,3 +397,110 @@ h3 Modals
     bs-modal='modal'
   )
     | Launch Modal
+
+h3 Asides
+
+.sg-example
+  button.btn.btn-lg.btn-primary(bs-aside='aside')
+    | Launch Aside
+
+h3 Alerts
+
+.sg-example
+  button.btn.btn-lg.btn-info(
+    bs-alert='alert'
+    data-placement='top'
+    data-container='body'
+    data-duration='1'
+  )
+    | Toggle Info Alert
+    br
+    small (top)
+
+  button.btn.btn-lg.btn-success(
+    data-placement='top-left'
+    data-container='body'
+    data-duration='1'
+    data-type='success'
+    data-title='{{alert.title}}'
+    data-content='{{alert.content}}'
+    bs-alert
+  )
+    | Toggle Success Alert
+    br
+    small (top left)
+
+  button.btn.btn-lg.btn-danger(
+    data-placement='top-right'
+    data-container='body'
+    data-duration='1'
+    data-type='danger'
+    data-title='{{alert.title}}'
+    data-content='{{alert.content}}'
+    bs-alert
+  )
+    | Toggle Danger Alert
+    br
+    small (top right)
+
+h3 Button Groups
+
+.sg-example
+  label= 'Toggle: '
+  button.btn.btn-default(type='button', ng-model='buttons.toggle', bs-checkbox) Toggle
+
+  hr
+
+  label= 'Checkboxes: '
+  .btn-group(ng-model='buttons.checkbox', bs-checkbox-group)
+    label.btn.btn-default
+      input(type='checkbox', value='left')
+      | Left
+    label.btn.btn-default
+      input(type='checkbox', value='middle')
+      | Middle
+    label.btn.btn-default
+      input(type='checkbox', value='right')
+      | Right
+
+  hr
+
+  label= 'Radios: '
+  .btn-group(ng-model='buttons.radio', bs-radio-group)
+    label.btn.btn-default
+      input.btn.btn-default(type='radio', value='0')
+      | First
+    label.btn.btn-default
+      input.btn.btn-default(type='radio', value='1')
+      | Second
+    label.btn.btn-default
+      input.btn.btn-default(type='radio', value='2')
+      | Third
+
+h3 Selects
+
+.sg-example
+  label= 'Single select: '
+  button.btn.btn-default(
+    type='button'
+    data-html='1'
+    ng-model='selectedIcon'
+    ng-options='icon.value as icon.label for icon in icons'
+    bs-select
+  )
+    | Action
+    span.caret
+
+  hr
+
+  label= 'Multiple select: '
+  button.btn.btn-default(
+    type='button'
+    data-html='1'
+    data-multiple='1'
+    ng-model='selectedIcons'
+    ng-options='icon.value as icon.label for icon in icons'
+    bs-select
+  )
+    | Action
+    span.caret
