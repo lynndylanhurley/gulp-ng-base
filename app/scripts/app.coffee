@@ -1,7 +1,6 @@
-console.log 'bang xxx'
-
 angular.module('defsynthApp', [
   'ui.router'
+  'mgcrea.ngStrap'
   'defsynthPartials'
 ])
   .config ($stateProvider, $urlRouterProvider, $locationProvider) ->
@@ -23,13 +22,4 @@ angular.module('defsynthApp', [
       .state 'style-guide',
         url: '/style-guide'
         templateUrl: 'style-guide.html'
-        controller: ($scope) ->
-          $scope.fakeListContent = _.map [0...3], ->
-            Faker.Lorem.sentences(1)
-
-          $scope.fakeUsers = _.map [0...6], ->
-            firstName: Faker.Name.firstName()
-            lastName:  Faker.Name.lastName()
-            email:     Faker.Internet.email()
-
-          console.log 'fake sentences', $scope.fakeListContent
+        controller: 'StyleGuideCtrl'

@@ -62,6 +62,7 @@ gulp.task('bowercss', function() {
     .pipe($.size());
 });
 
+// TODO: what a mess. maybe move all fonts into one dir?
 gulp.task('bower-fonts', function() {
   return gulp.src('app/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/*.*')
     .pipe(gulp.dest('.tmp/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap'))
@@ -94,10 +95,6 @@ gulp.task('templates', function() {
       $.util.log(e.toString());
       this.emit('end');
     })
-    //.pipe(wiredep({
-      //directory: 'app/bower_components',
-      //ignorePath: 'app/'
-    //}))
     .pipe($.inject(
       $.bowerFiles({read: false}), {
         ignorePath: ['app'],
@@ -105,7 +102,6 @@ gulp.task('templates', function() {
         endtag: '<!-- endbower-->'
       }
     ))
-
     .pipe($.inject(
       gulp.src(
         [
