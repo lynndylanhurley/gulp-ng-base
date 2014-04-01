@@ -11,6 +11,8 @@ html.no-js
     link(rel='shortcut icon', href='/favicon.ico?v=2')
 
     // Place favicon.ico and apple-touch-icon.png in the root directory
+    // bower:css
+    // endbower
     // build:css /styles/main.css
     // inject:css
     // endinject
@@ -20,7 +22,7 @@ html.no-js
     script(src='/bower_components/modernizr/modernizr.js')
     // endbuild
 
-  body(ng-app='defsynthApp')
+  body(ng-app='defsynthApp', ng-controller='MainCtrl')
     //if lt IE 10
       p.browsehappy
         | You are using an

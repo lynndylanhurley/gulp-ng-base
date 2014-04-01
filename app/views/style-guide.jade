@@ -3,142 +3,323 @@
 
 h2 Headers
 
-h1
-  | This is an h1 header
-  small &nbsp; Secondary Text
+.sg-example
+  h1
+    | This is an h1 header
+    small &nbsp; Secondary Text
 
-h2
-  | This is an h2 header
-  small &nbsp; Secondary Text
+  h2
+    | This is an h2 header
+    small &nbsp; Secondary Text
 
-h3
-  | This is an h3 header
-  small &nbsp; Secondary Text
+  h3
+    | This is an h3 header
+    small &nbsp; Secondary Text
 
-h4
-  | This is an h4 header
-  small &nbsp; Secondary Text
+  h4
+    | This is an h4 header
+    small &nbsp; Secondary Text
 
-h5
-  | This is an h5 header
-  small &nbsp; Secondary Text
+  h5
+    | This is an h5 header
+    small &nbsp; Secondary Text
 
-h6
-  | This is an h6 header
-  small &nbsp; Secondary Text
+  h6
+    | This is an h6 header
+    small &nbsp; Secondary Text
+
+h2 Text Emphasis
+
+h3 Small Text
+
+.sg-example
+  small This line of text is meant to be treated as fine print
+
+h3 Bold
+
+.sg-example
+  = 'The following snippet is '
+  strong rendered as bold text
+
+h3 Italics
+
+.sg-example
+  = 'The following snippet is '
+  em rendered as italicized text
 
 h2 Lists
 
 h3 Unordered List
 
-ul
-  li(ng-repeat='item in fakeListContent') {{ item }}
+.sg-example
+  ul
+    li(ng-repeat='item in fakeListContent') {{ item }}
 
 h3 Ordered List
 
-ol
-  li(ng-repeat='item in fakeListContent') {{ item }}
+.sg-example
+  ol
+    li(ng-repeat='item in fakeListContent') {{ item }}
 
 
 h2 Tables
 
 h3 Default Table
 
-table.table.table-hover
-  thead
-    tr
-      th #
-      th First Name
-      th Last Name
-      th Email
+.sg-example
+  table.table.table-hover
+    thead
+      tr
+        th #
+        th First Name
+        th Last Name
+        th Email
 
-  tbody
-    tr(ng-repeat='user in fakeUsers')
-      td {{ $index }}
-      td {{ user.firstName }}
-      td {{ user.lastName }}
-      td {{ user.email }}
+    tbody
+      tr(ng-repeat='user in fakeUsers')
+        td {{ $index }}
+        td {{ user.firstName }}
+        td {{ user.lastName }}
+        td {{ user.email }}
 
 
 h3 Striped Table
 
-table.table.table-striped.table-hover
-  thead
-    tr
-      th #
-      th First Name
-      th Last Name
-      th Email
+.sg-example
+  table.table.table-striped.table-hover
+    thead
+      tr
+        th #
+        th First Name
+        th Last Name
+        th Email
 
-  tbody
-    tr(ng-repeat='user in fakeUsers')
-      td {{ $index }}
-      td {{ user.firstName }}
-      td {{ user.lastName }}
-      td {{ user.email }}
+    tbody
+      tr(ng-repeat='user in fakeUsers')
+        td {{ $index }}
+        td {{ user.firstName }}
+        td {{ user.lastName }}
+        td {{ user.email }}
 
 h3 Bordered Table
 
-table.table.table-bordered.table-hover
-  thead
-    tr
-      th #
-      th First Name
-      th Last Name
-      th Email
+.sg-example
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        th #
+        th First Name
+        th Last Name
+        th Email
 
-  tbody
-    tr(ng-repeat='user in fakeUsers')
-      td {{ $index }}
-      td {{ user.firstName }}
-      td {{ user.lastName }}
-      td {{ user.email }}
+    tbody
+      tr(ng-repeat='user in fakeUsers')
+        td {{ $index }}
+        td {{ user.firstName }}
+        td {{ user.lastName }}
+        td {{ user.email }}
 
 h3 Contextual Table Items
 
-table.table.table-hover
-  thead
-    tr
-      th Context
-      th First Name
-      th Last Name
-      th Email
+.sg-example
+  table.table.table-hover
+    thead
+      tr
+        th Context
+        th First Name
+        th Last Name
+        th Email
 
-  tbody
-    tr
-      td Default
-      td {{ fakeUsers[0].firstName }}
-      td {{ fakeUsers[0].lastName }}
-      td {{ fakeUsers[0].email }}
+    tbody
+      tr
+        td Default
+        td {{ fakeUsers[0].firstName }}
+        td {{ fakeUsers[0].lastName }}
+        td {{ fakeUsers[0].email }}
 
-    tr.active
-      td Active
-      td {{ fakeUsers[1].firstName }}
-      td {{ fakeUsers[1].lastName }}
-      td {{ fakeUsers[1].email }}
+      tr.active
+        td Active
+        td {{ fakeUsers[1].firstName }}
+        td {{ fakeUsers[1].lastName }}
+        td {{ fakeUsers[1].email }}
 
-    tr.success
-      td Success
-      td {{ fakeUsers[2].firstName }}
-      td {{ fakeUsers[2].lastName }}
-      td {{ fakeUsers[2].email }}
+      tr.success
+        td Success
+        td {{ fakeUsers[2].firstName }}
+        td {{ fakeUsers[2].lastName }}
+        td {{ fakeUsers[2].email }}
 
-    tr.warning
-      td Warning
-      td {{ fakeUsers[3].firstName }}
-      td {{ fakeUsers[3].lastName }}
-      td {{ fakeUsers[3].email }}
+      tr.warning
+        td Warning
+        td {{ fakeUsers[3].firstName }}
+        td {{ fakeUsers[3].lastName }}
+        td {{ fakeUsers[3].email }}
 
-    tr.danger
-      td Danger
-      td {{ fakeUsers[4].firstName }}
-      td {{ fakeUsers[4].lastName }}
-      td {{ fakeUsers[4].email }}
+      tr.danger
+        td Danger
+        td {{ fakeUsers[4].firstName }}
+        td {{ fakeUsers[4].lastName }}
+        td {{ fakeUsers[4].email }}
 
-    tr.info
-      td Info
-      td {{ fakeUsers[5].firstName }}
-      td {{ fakeUsers[5].lastName }}
-      td {{ fakeUsers[5].email }}
+      tr.info
+        td Info
+        td {{ fakeUsers[5].firstName }}
+        td {{ fakeUsers[5].lastName }}
+        td {{ fakeUsers[5].email }}
 
 h2 Forms
+
+h3 Basic Form
+
+.sg-example
+  form(role="form")
+    .form-group
+      label(for="exampleInputEmail1") Email address
+      input#exampleInputEmail1.form-control(type="email", placeholder="Enter email")
+
+    .form-group
+      label(for='emampleInputPassword1') Password
+      input#exampleInputPassword1.form-control(type='password', placeholder='Password')
+
+    .form-group
+      label(for='exampleInputFile') File input
+      input#exampleInputFile(type='file')
+      p.help-block Example block-level help text here.
+
+    .checkbox
+      label
+        input(type='checkbox')
+        | Check Me out
+
+    button.btn.btn-default(type='submit') Submit
+
+h3 Inline Form
+
+.sg-example
+  form.form-inline(role='form')
+    .form-group
+      label.sr-only(for='exampleInputEmail2') Email address
+      input#exampleInputEmail2.form-control(type='email', placeholder='Enter email')
+
+    .form-group
+      label.sr-only(for='exampleInputPassword2') Password
+      input#exampleInputPassword2.form-control(type='password', placeholder='password')
+
+    .checkbox
+      label
+        input(type='checkbox')
+        | Remember me
+
+    button.btn.btn-default(type='submit') Sign in
+
+h3 Horizontal Form
+
+.sg-example
+  form.form-horizontal
+    .form-group
+      label.col-sm-2.control-label(for='inputEmail3') Email
+      .col-sm-10
+        input#inputEmail3.form-control(type='email', placeholder='Email')
+
+    .form-group
+      label.col-sm-2.control-label(for='inputPassword3') Password
+      .col-sm-10
+        input#inputEmail3.form-control(type='password', placeholder='Password')
+
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        .checkbox
+          label
+            input(type='checkbox')
+            | Remember me
+
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        button.btn.btn-default(type='submit') Sign in
+
+
+h3 Field types
+
+.sg-example
+  input.form-control(type='text', placeholder='Text input')
+
+.sg-example
+  input.form-control.focused(type='text', placeholder='Disabled text input', disabled)
+
+.sg-example
+  textarea.form-control(rows='3', placeholder='Text area')
+
+.sg-example
+  .checkbox
+    label
+      input(type='checkbox')
+      = ' Checkbox 1'
+
+  .checkbox
+    label
+      input(type='checkbox')
+      = ' Checkbox 2'
+
+.sg-example
+  .radio
+    label
+      input#optionsRadios1(value='option1', name='optionsRadios', type='radio', checked='true')
+      | Radio buttons
+
+  .radio
+    label
+      input#optionsRadios2(value='option2', name='optionsRadios', type='radio', checked='true')
+      | There can be only one
+
+.sg-example
+  select.form-control
+    option Select box
+    option 1
+    option 2
+    option 3
+
+.sg-example
+  select.form-control(multiple)
+    option Multi-select box
+    option Hold 'Option'
+    option To select
+    option Multiple options
+
+h3 Disabled Fieldset
+
+.sg-example
+  form(role='form')
+    fieldset(disabled)
+      .form-group
+        label(for='disabledTextInput') Disabled input
+        input#disabledTextInput.form-control(placeholder='Disabled text input')
+
+      .form-group
+        label(for='disabledSelect') Disabled select menu
+        select#disabledSelect.form-control
+          option Disabled select
+
+      .checkbox
+        label
+          input(type='checkbox')
+          | Disabled checkbox
+
+      button.btn.btn-primary(type='submit') Submit
+
+h3 Validation states
+
+.sg-example
+  .form-group.has-success.has-feedback
+    label.control-label(for='inputSuccess1') Input with success
+    input#inputSuccess1.form-control(type='text')
+    span.glyphicon.glyphicon-ok.form-control-feedback
+
+  .form-group.has-warning.has-feedback
+    label.control-label(for='inputWarning1') Input with warning
+    input#inputWarning1.form-control(type='text')
+    span.glyphicon.glyphicon-warning-sign.form-control-feedback
+
+  .form-group.has-error.has-feedback
+    label.control-label(for='inputError1') Input with error
+    input#inputError1.form-control(type='text')
+    span.glyphicon.glyphicon-remove.form-control-feedback

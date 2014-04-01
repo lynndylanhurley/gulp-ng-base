@@ -11,5 +11,13 @@
     "Faker": "~0.7.0",
     "lodash": "~2.4.1"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "overrides": {
+    "bootstrap": {
+      "ignore": true
+    },
+    "Faker": {
+      "main": "Faker.js"
+    }
+  }
 }

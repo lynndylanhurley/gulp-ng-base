@@ -6,6 +6,7 @@ var wiredep = require('wiredep').stream;
 var sprite  = require('css-sprite').stream;
 var config  = require('config');
 var cached  = require('gulp-cached');
+var es      = require('event-stream');
 
 // for deployment
 var env             = (process.env.NODE_ENV || 'development').toLowerCase();
@@ -61,13 +62,22 @@ gulp.task('bowercss', function() {
     .pipe($.size());
 });
 
+gulp.task('bower-fonts', function() {
+  return gulp.src('app/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/*.*')
+    .pipe(gulp.dest('.tmp/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap'))
+    .pipe($.size());
+})
+
 // CoffeeScript
 gulp.task('coffee', function() {
   return gulp.src('app/scripts/**/*.coffee')
     .pipe(cached('coffee'))
     .pipe($.changed('dist/scripts'))
-    .pipe($.coffee({bare: true})
-    .on('error', $.util.log))
+    .pipe($.coffee({bare: true}))
+    .on('error', function(e) {
+      $.util.log(e.toString());
+      this.emit('end');
+    })
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe($.size());
 });
@@ -80,16 +90,27 @@ gulp.task('templates', function() {
     .pipe($.jade({
       pretty: true
     }))
-    .pipe(wiredep({
-      directory: 'app/bower_components',
-      ignorePath: 'app/'
-    }))
+    .on('error', function(e) {
+      $.util.log(e.toString());
+      this.emit('end');
+    })
+    //.pipe(wiredep({
+      //directory: 'app/bower_components',
+      //ignorePath: 'app/'
+    //}))
+    .pipe($.inject(
+      $.bowerFiles({read: false}), {
+        ignorePath: ['app'],
+        starttag: '<!-- bower:{{ext}}-->',
+        endtag: '<!-- endbower-->'
+      }
+    ))
+
     .pipe($.inject(
       gulp.src(
         [
           '.tmp/views/**/*.js',
           '.tmp/scripts/**/*.js',
-          '!.tmp/scripts/vendor/*.js',
           '.tmp/styles/**/*.css'
         ],
         {read: false}
@@ -127,14 +148,14 @@ gulp.task('images', function () {
 
 // Stylus
 gulp.task('stylus', ['sprites'], function() {
-  return gulp.src(['app/styles/**/*.styl'])
-    .pipe(cached('stylus'))
+  return gulp.src(['app/styles/*.styl'])
+    //.pipe(cached('stylus'))
     //.pipe($.changed('.tmp/styles'))
     .pipe($.stylus({
       paths: ['app/styles', '.tmp/styles'],
-      set: ['compress'],
+      //set: ['compress'],
       use: ['nib'],
-      import: ['nib']
+      import: ['nib', 'sprite', 'pages/**/*.styl']
     }))
     .pipe(gulp.dest('.tmp/styles'))
     .pipe($.size());
@@ -276,7 +297,7 @@ gulp.task('clean', function () {
 });
 
 // Transpile
-gulp.task('transpile', ['sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss']);
+gulp.task('transpile', ['sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss', 'bower-fonts']);
 
 // Inject
 gulp.task('inject', ['transpile'], function() {
@@ -345,8 +366,6 @@ gulp.task('dev', ['html2js'], function () {
     '.tmp/views/**/*.js',
     '.tmp/images/**/*.*'
   ], function(event) {
-    $.util.log('@-->caught live reload event', event.path);
-
     gulp.src(event.path, {read: false})
       .pipe($.livereload(lr));
   });
