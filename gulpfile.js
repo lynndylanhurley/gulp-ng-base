@@ -191,18 +191,19 @@ gulp.task('useref', function () {
   var cssFilter = $.filter('.tmp/**/*.css');
 
   return es.merge(
-      gulp.src('.tmp/images/**/*.*', {base: '.tmp'}),
-      gulp.src('.tmp/index.html').pipe($.useref.assets())
+    gulp.src('.tmp/images/**/*.*', {base: '.tmp'}),
+    gulp.src('.tmp/fonts/**/*.*', {base: '.tmp'}),
+    gulp.src('.tmp/index.html').pipe($.useref.assets())
+      .pipe(jsFilter)
+      .pipe($.uglify())
+      .pipe(jsFilter.restore())
+      .pipe(cssFilter)
+      .pipe($.minifyCss())
+      .pipe(cssFilter.restore())
+      .pipe($.useref.restore())
+      .pipe($.useref())
+      .pipe(gulp.dest('.tmp'))
     )
-    .pipe(jsFilter)
-    .pipe($.uglify())
-    .pipe(jsFilter.restore())
-    .pipe(cssFilter)
-    .pipe($.minifyCss())
-    .pipe(cssFilter.restore())
-    .pipe($.useref.restore())
-    .pipe($.useref())
-    .pipe(gulp.dest('.tmp'))
     .pipe($.rev())
     .pipe(gulp.dest('dist'))
     .pipe($.rev.manifest())
@@ -388,7 +389,7 @@ gulp.task('reload-js-tmpl', function(cb) {
 gulp.task('build-prod', function(cb) {
   seq(
     'build-dev',
-    //'images',
+    'images',
     'useref',
     'copy',
     'replace',
