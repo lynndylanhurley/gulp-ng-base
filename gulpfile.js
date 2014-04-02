@@ -193,7 +193,8 @@ gulp.task('useref', function () {
   return es.merge(
     gulp.src('.tmp/images/**/*.*', {base: '.tmp'}),
     gulp.src('.tmp/fonts/**/*.*', {base: '.tmp'}),
-    gulp.src('.tmp/index.html', {base: '.tmp'}).pipe($.useref.assets())
+    gulp.src('.tmp/index.html', {base: '.tmp'})
+      .pipe($.useref.assets())
       .pipe(jsFilter)
       .pipe($.uglify())
       .pipe(jsFilter.restore())
@@ -202,10 +203,9 @@ gulp.task('useref', function () {
       .pipe(cssFilter.restore())
       .pipe($.useref.restore())
       .pipe($.useref())
-      .pipe(gulp.dest('.tmp'))
     )
-    .pipe(gulp.dest('dist'))
-    .pipe($.rev())
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.if(/^((?!(index\.html)).)*$/, $.rev()))
     .pipe(gulp.dest('dist'))
     .pipe($.rev.manifest())
     .pipe(gulp.dest('.tmp'))
@@ -393,9 +393,9 @@ gulp.task('build-prod', function(cb) {
     'images',
     'useref',
     //'copy',
-    'replace',
-    'cdnize',
-    's3',
+    //'replace',
+    //'cdnize',
+    //'s3',
     cb
   );
 });
