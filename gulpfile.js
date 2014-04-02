@@ -401,6 +401,9 @@ gulp.task('build-prod', function(cb) {
 });
 
 gulp.task('deploy', function(cb) {
+  if (!process.env.NODE_ENV) {
+    throw 'Error: you forgot to set NODE_ENV'
+  }
   seq('build-prod', 'push', cb);
 });
 
