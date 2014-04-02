@@ -66,8 +66,7 @@
     "gulp-bower-files": "~0.2.1",
     "event-stream": "~3.1.1",
     "run-sequence": "~0.3.6",
-    "lazypipe": "~0.2.1",
-    "stream-combiner": "0.0.4"
+    "lazypipe": "~0.2.1"
   },
   "engines": {
     "node": ">=0.10.0"

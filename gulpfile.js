@@ -190,8 +190,10 @@ gulp.task('useref', function () {
   var jsFilter = $.filter('.tmp/**/*.js');
   var cssFilter = $.filter('.tmp/**/*.css');
 
-  return gulp.src('.tmp/*.html')
-    .pipe($.useref.assets())
+  return es.merge(
+      gulp.src('.tmp/images/**/*.*', {base: '.tmp'}),
+      gulp.src('.tmp/index.html').pipe($.useref.assets())
+    )
     .pipe(jsFilter)
     .pipe($.uglify())
     .pipe(jsFilter.restore())
@@ -200,17 +202,6 @@ gulp.task('useref', function () {
     .pipe(cssFilter.restore())
     .pipe($.useref.restore())
     .pipe($.useref())
-    .pipe(gulp.dest('.tmp'))
-    .pipe($.size());
-});
-
-// Version files
-gulp.task('version', function() {
-  return gulp.src([
-    '.tmp/styles/**/*.css',
-    '.tmp/scripts/**/*.js',
-    '.tmp/images/**/*.*'
-  ], {base: '.tmp'})
     .pipe(gulp.dest('.tmp'))
     .pipe($.rev())
     .pipe(gulp.dest('dist'))
@@ -396,6 +387,23 @@ gulp.task('reload-js-tmpl', function(cb) {
 
 gulp.task('reload-stylus', function(cb) {
   seq('sprites', 'stylus', cb);
+});
+
+gulp.task('build-prod', function(cb) {
+  seq(
+    'build-dev',
+    'images',
+    'useref',
+    'copy',
+    'replace',
+    'cdnize',
+    's3',
+    cb
+  );
+});
+
+gulp.task('deploy', function(cb) {
+  seq('build-prod', 'push', cb);
 });
 
 
