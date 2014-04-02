@@ -12,10 +12,13 @@ var app     = express();
 // env setup
 // TODO: comment this better
 if (process.env.NODE_ENV) {
-  distDir = 'dist-'+process.env.NODE_ENV.toLowerCase();
+  distDir = '/dist-'+process.env.NODE_ENV.toLowerCase();
 } else {
   app.use(require('connect-livereload')());
 }
+
+console.log('node env', process.env.NODE_ENV);
+console.log('dist dir', __dirname+distDir);
 
 // proxy api requests (for older IE browsers)
 app.all('/proxy/*', function(req, res, next) {

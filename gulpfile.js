@@ -388,7 +388,7 @@ gulp.task('reload-js-tmpl', function(cb) {
 gulp.task('build-prod', function(cb) {
   seq(
     'build-dev',
-    'images',
+    //'images',
     'useref',
     'copy',
     'replace',
