@@ -504,3 +504,221 @@ h3 Selects
   )
     | Action
     span.caret
+
+
+h3 Datepickers
+
+.sg-example
+  form.form-inline(name='datepickerForm', role='form')
+    .form-group(ng-class="{'has-error': datePickerForm.date.$invalid}")
+      label.control-label
+        i.fa.fa-calendar
+        = ' Date '
+        small (as date)
+      input.form-control(
+        type='text'
+        ng-model='selectedDate'
+        name='date'
+        bs-datepicker
+      )
+
+    hr
+
+    .form-group(ng-class="{'has-error': datepickerForm.date2.$invalid}")
+      label.control-label
+        i.fa.fa-calendar
+        = ' Date '
+        small (as number)
+      input.form-control(
+        type='text'
+        ng-model='selectedDateAsNumber'
+        data-date-format='yyyy-MM-dd'
+        data-date-type='number'
+        data-min-date='02/10/86'
+        data-max-date='today'
+        data-autoclose='1'
+        name='date2'
+        bs-datepicker
+      )
+
+    hr
+
+    .form-group
+      label.control-label
+        i.fa.fa-calendar
+        = ' '
+        i.fa.fa-arrows-h
+        = ' '
+        i.fa.fa-calendar
+        = ' Date range '
+        small (dynamic)
+
+      .form-group
+        input.form-control(
+          type='text'
+          ng-model='fromDate'
+          data-max-date='{{untilDate}}'
+          placeholder='From'
+          bs-datepicker
+        )
+
+      .form-group
+        input.form-control(
+          type='text'
+          ng-model='untilDate'
+          data-min-date='{{fromDate}}'
+          placeholder='Until'
+          bs-datepicker
+        )
+
+h3 Timepickers
+
+.sg-example
+
+  form.form-inline(name='timepickerForm', role='form')
+    .form-group(ng-class="{'has-error': timePickerForm.time.$invalid}")
+      label.control-label
+        i.fa.fa-clock-o
+        = ' Time '
+        small (as date)
+      input.form-control(
+        type='text'
+        size='8'
+        ng-model='time'
+        name='time'
+        bs-timepicker
+      )
+
+    hr
+
+    .form-group(ng-class="{'has-error': timePickerForm.time2.$invalid}")
+      label.control-label
+        i.fa.fa-clock-o
+        = ' Time '
+        small (as number)
+      input.form-control(
+        type='text'
+        size='8'
+        ng-model='selectedTimeAsNumber'
+        data-time-format='HH:mm'
+        data-time-type='number'
+        data-min-time='10:00'
+        data-max-time='13:30'
+        data-autoclose='1'
+        name='time2'
+        bs-timepicker
+      )
+
+    hr
+
+    .form-group
+      label.control-label
+        i.fa.fa-calendar
+        = ' Datetime picker '
+      .form-group
+        input.form-control(
+          type='text'
+          size='10'
+          ng-model='sharedDate'
+          data-autoclose='1'
+          placeholder='Date'
+          bs-datepicker
+        )
+      .form-group
+        input.form-control(
+          type='text'
+          size='8'
+          ng-model='sharedDate'
+          data-autoclose='1'
+          placeholder='Time'
+          bs-timepicker
+        )
+
+
+h3 Tooltips
+
+.sg-example
+  p
+    | smart- dolphin jeans free-market euro-pop car
+    a(
+      data-animation='am-flip-x'
+      bs-tooltip='tooltip'
+      data-html='true'
+    )
+      = ' motion apophenia '
+    | market modem alcohol sprawl otaku j-pop otaku ablative.
+
+  .input-group.col-xs-5
+    .input-group-btn
+      button.btn.btn-primary(
+        type='button'
+        data-trigger='click'
+        data-type='success'
+        data-title='{{tooltip.title}}'
+        data-html='true'
+        bs-tooltip
+      )
+        | Click me
+
+    input.form-control(
+      type='text'
+      data-placement='right'
+      data-type='info'
+      data-container='body'
+      placeholder='Focus to toggle tooltip'
+      data-trigger='focus'
+      data-html='true'
+      bs-tooltip='tooltip'
+    )
+
+  .checkbox
+    label(
+      data-placement='bottom-left'
+      data-type='info'
+      data-animation='am-fade-and-scale'
+      data-html='true'
+      bs-tooltip='tooltip'
+    )
+      input(type='checkbox', ng-model='tooltip.checked')
+      | Remember me
+
+h3 Popovers
+
+.sg-example
+  button.btn.btn-lg.btn-primary(
+    type='button'
+    data-placement='bottom'
+    data-animation='am-flip-x'
+    data-html='true'
+    data-trigger='focus'
+    bs-popover='popover'
+  )
+    | Click to toggle popover
+    br
+    small (bottom)
+
+
+  button.btn.btn-lg.btn-primary(
+    type='button'
+    data-placement='top-right'
+    data-animation='am-flip-x'
+    data-html='true'
+    bs-popover='popover'
+  )
+    | Click to toggle popover
+    br
+    small (top-right, sticky)
+
+
+  button.btn.btn-lg.btn-danger(
+    type='button'
+    title='{{popover.title}}'
+    content='{{popover.content}}'
+    data-animation='am-flip-x'
+    data-trigger='focus'
+    data-template='partials/style-guide/popover.html'
+    bs-popover
+  )
+    | Click to toggle popover
+    br
+    small (right, using template)

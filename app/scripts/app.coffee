@@ -1,4 +1,5 @@
 angular.module('defsynthApp', [
+  'ngSanitize'
   'ui.router'
   'mgcrea.ngStrap'
   'defsynthPartials'

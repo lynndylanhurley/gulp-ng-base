@@ -1,12 +1,14 @@
 'use strict';
 // Generated on 2014-03-18 using generator-gulp-webapp 0.0.4
 
-var gulp    = require('gulp');
-var wiredep = require('wiredep').stream;
-var sprite  = require('css-sprite').stream;
-var config  = require('config');
-var cached  = require('gulp-cached');
-var es      = require('event-stream');
+var gulp     = require('gulp');
+var wiredep  = require('wiredep').stream;
+var sprite   = require('css-sprite').stream;
+var config   = require('config');
+var cached   = require('gulp-cached');
+var es       = require('event-stream');
+var seq      = require('run-sequence');
+var lazypipe = require('lazypipe');
 
 // for deployment
 var env             = (process.env.NODE_ENV || 'development').toLowerCase();
@@ -76,7 +78,6 @@ gulp.task('bower-fonts', function() {
 gulp.task('coffee', function() {
   return gulp.src('app/scripts/**/*.coffee')
     .pipe(cached('coffee'))
-    .pipe($.changed('dist/scripts'))
     .pipe($.coffee({bare: true}))
     .on('error', function(e) {
       $.util.log(e.toString());
@@ -84,53 +85,6 @@ gulp.task('coffee', function() {
     })
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe($.size());
-});
-
-// Jade to HTML
-gulp.task('templates', function() {
-  return gulp.src('app/**/*.jade')
-    .pipe(cached('templates'))
-    .pipe($.changed('.tmp'))
-    .pipe($.jade({
-      pretty: true
-    }))
-    .on('error', function(e) {
-      $.util.log(e.toString());
-      this.emit('end');
-    })
-    .pipe($.inject(
-      $.bowerFiles({read: false}), {
-        ignorePath: ['app'],
-        starttag: '<!-- bower:{{ext}}-->',
-        endtag: '<!-- endbower-->'
-      }
-    ))
-    .pipe($.inject(
-      gulp.src(
-        [
-          '.tmp/views/**/*.js',
-          '.tmp/scripts/**/*.js',
-          '.tmp/styles/**/*.css'
-        ],
-        {read: false}
-      ), {
-        ignorePath: ['.tmp'],
-        starttag: '<!-- inject:{{ext}}-->',
-        endtag: '<!-- endinject-->'
-      }
-    ))
-    .pipe(gulp.dest('.tmp'))
-    .pipe($.size());
-});
-
-// Jade to JS
-gulp.task('jstemplates', function() {
-  return gulp.src('.tmp/views/**/*.html')
-    .pipe(cached('jstemplates'))
-    .pipe($.ngHtml2js({
-      moduleName: 'defsynthPartials'
-    }))
-    .pipe(gulp.dest('.tmp/views'));
 });
 
 // Images
@@ -145,20 +99,6 @@ gulp.task('images', function () {
     .pipe($.size());
 });
 
-// Stylus
-gulp.task('stylus', ['sprites'], function() {
-  return gulp.src(['app/styles/*.styl'])
-    //.pipe(cached('stylus'))
-    //.pipe($.changed('.tmp/styles'))
-    .pipe($.stylus({
-      paths: ['app/styles', '.tmp/styles'],
-      //set: ['compress'],
-      use: ['nib'],
-      import: ['nib', 'sprite', 'pages/**/*.styl']
-    }))
-    .pipe(gulp.dest('.tmp/styles'))
-    .pipe($.size());
-});
 
 // Sprites
 gulp.task('sprites', function() {
@@ -175,8 +115,77 @@ gulp.task('sprites', function() {
     .pipe($.size());
 });
 
+// Stylus
+gulp.task('stylus', function() {
+  return gulp.src('app/styles/**/*.styl')
+    .pipe(cached('stylus'))
+    .pipe($.stylus({
+      paths: ['app/styles', '.tmp/styles'],
+      //set: ['compress'],
+      use: ['nib'],
+      import: ['nib', 'sprite']
+    }))
+    .on('error', function(e) {
+      $.util.log(e.toString());
+      this.emit('end');
+    })
+    .pipe(gulp.dest('.tmp/styles'))
+    .pipe($.size());
+});
+
+// Clean
+gulp.task('clean', function () {
+  return gulp.src(['dist/*', '.tmp/*'], {read: false}).pipe($.clean());
+});
+
+// Transpile
+gulp.task('transpile', ['sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss', 'bower-fonts']);
+
+// jade -> html
+var jadeify = lazypipe()
+  .pipe($.jade, {
+    pretty: true
+  });
+
+// Jade to HTML
+gulp.task('base-tmpl', function() {
+  return gulp.src('app/index.jade')
+    .pipe($.changed('.tmp'))
+    .pipe(jadeify())
+    .pipe($.inject($.bowerFiles({read: false}), {
+      ignorePath: ['app'],
+      starttag: '<!-- bower:{{ext}}-->',
+      endtag: '<!-- endbower-->'
+    }))
+    .pipe($.inject(gulp.src(
+      [
+        '.tmp/views/**/*.js',
+        '.tmp/scripts/**/*.js',
+        '.tmp/styles/**/*.css'
+      ],
+      {read: false}
+    ), {
+      ignorePath: ['.tmp'],
+      starttag: '<!-- inject:{{ext}}-->',
+      endtag: '<!-- endinject-->'
+    }))
+    .pipe(gulp.dest('.tmp'))
+    .pipe($.size());
+});
+
+// Jade to JS
+gulp.task('js-tmpl', function() {
+  return gulp.src('app/views/**/*.jade')
+    .pipe(cached('js-tmpl'))
+    .pipe(jadeify())
+    .pipe($.ngHtml2js({
+      moduleName: 'defsynthPartials'
+    }))
+    .pipe(gulp.dest('.tmp/views'));
+});
+
 // useref
-gulp.task('useref', ['transpile', 'images'], function () {
+gulp.task('useref', function () {
   $.util.log('running useref');
   var jsFilter = $.filter('.tmp/**/*.js');
   var cssFilter = $.filter('.tmp/**/*.css');
@@ -196,7 +205,7 @@ gulp.task('useref', ['transpile', 'images'], function () {
 });
 
 // Version files
-gulp.task('version', ['useref'], function() {
+gulp.task('version', function() {
   return gulp.src([
     '.tmp/styles/**/*.css',
     '.tmp/scripts/**/*.js',
@@ -210,14 +219,14 @@ gulp.task('version', ['useref'], function() {
     .pipe($.size());
 });
 
-gulp.task('copy', ['version'], function() {
+gulp.task('copy', function() {
   return gulp.src(['.tmp/*.html'])
     .pipe(gulp.dest('dist'))
     .pipe($.size());
-})
+});
 
 // Update file version refs
-gulp.task('replace', ['copy'], function() {
+gulp.task('replace', function() {
   var manifest = require('./.tmp/rev-manifest');
 
   var patterns = []
@@ -241,7 +250,7 @@ gulp.task('replace', ['copy'], function() {
 });
 
 // CDNize
-gulp.task('cdnize', ['replace'], function() {
+gulp.task('cdnize', function() {
   return gulp.src([
     'dist/*.html',
     'dist/styles/**/*.css'
@@ -278,7 +287,7 @@ gulp.task('s3', function() {
 });
 
 // Push to heroku
-gulp.task('push', ['s3'], $.shell.task([
+gulp.task('push', $.shell.task([
   'git checkout -b '+tag,
   'cp -R dist '+DIST_DIR,
   'git add -u .',
@@ -289,36 +298,6 @@ gulp.task('push', ['s3'], $.shell.task([
   'git branch -D '+tag,
   'rm -rf '+DIST_DIR
 ]));
-
-// Clean
-gulp.task('clean', function () {
-  return gulp.src(['dist/*', '.tmp/*'], {read: false}).pipe($.clean());
-});
-
-// Transpile
-gulp.task('transpile', ['sprites', 'sass', 'stylus', 'coffee', 'js', 'bowerjs', 'bowercss', 'bower-fonts']);
-
-// Inject
-gulp.task('inject', ['transpile'], function() {
-  gulp.start('templates');
-});
-
-gulp.task('html2js', ['inject'], function() {
-  gulp.start('jstemplates')
-});
-
-// Build
-gulp.task('build', ['cdnize']);
-
-// Deploy
-gulp.task('deploy', ['build'], function() {
-  gulp.start('push');
-})
-
-// Default task
-gulp.task('default', ['clean'], function () {
-  gulp.start('build');
-});
 
 
 // E2E Protractor tests
@@ -338,9 +317,8 @@ gulp.task('test:e2e', ['protractor'], function() {
   gulp.watch('test/e2e/**/*.coffee', ['protractor']);
 });
 
-
 // Watch
-gulp.task('dev', ['html2js'], function () {
+gulp.task('watch', function () {
   var lr      = require('tiny-lr')();
   var nodemon = require('gulp-nodemon');
 
@@ -362,7 +340,6 @@ gulp.task('dev', ['html2js'], function () {
     '.tmp/*.html',
     '.tmp/styles/**/*.css',
     '.tmp/scripts/**/*.js',
-    '.tmp/views/**/*.js',
     '.tmp/images/**/*.*'
   ], function(event) {
     gulp.src(event.path, {read: false})
@@ -373,7 +350,7 @@ gulp.task('dev', ['html2js'], function () {
   gulp.watch('app/styles/**/*.scss', ['sass']);
 
   // Watch .styl files
-  gulp.watch(['app/styles/**/*.styl'], ['stylus']);
+  gulp.watch('app/styles/**/*.styl', ['stylus']);
 
   // Watch sprites
   gulp.watch('app/images/sprites/**/*.png', ['sprites']);
@@ -385,8 +362,8 @@ gulp.task('dev', ['html2js'], function () {
   gulp.watch('app/scripts/**/*.coffee', ['coffee']);
 
   // Watch .jade files
-  gulp.watch('app/**/*.jade', ['templates']);
-  gulp.watch('.tmp/views/**/*.html', ['jstemplates']);
+  gulp.watch('app/index.jade', ['base-tmpl'])
+  gulp.watch('app/views/**/*.jade', ['reload-js-tmpl'])
 
   // Watch image files
   //gulp.watch('app/images/**/*', ['images']);
@@ -395,13 +372,37 @@ gulp.task('dev', ['html2js'], function () {
   gulp.watch('app/bower_components/*', ['bowerjs', 'bowercss']);
 });
 
+// Composite tasks
+// TODO: refactor when gulp adds support for synchronous tasks.
+// https://github.com/gulpjs/gulp/issues/347
+gulp.task('build-dev', function(cb) {
+  seq(
+    'clean',
+    'sprites',
+    'transpile',
+    'js-tmpl',
+    'base-tmpl',
+    cb
+  );
+});
+
+gulp.task('dev', function(cb) {
+  seq('build-dev', 'watch', cb);
+});
+
+gulp.task('reload-js-tmpl', function(cb) {
+  seq('js-tmpl', 'base-tmpl', cb);
+});
+
+gulp.task('reload-stylus', function(cb) {
+  seq('sprites', 'stylus', cb);
+});
 
 
 // TODO:
 // project/workflow
 // [x] sprites
 // [x] stylus
-// [x] changed
 // [x] cached
 // [x] config files
 // [x] minify
@@ -415,7 +416,7 @@ gulp.task('dev', ['html2js'], function () {
 
 // angular
 // [x] routes + root ui-view
-// [ ] main controller
+// [x] main controller
 
 // css
 // [x] sticky footer

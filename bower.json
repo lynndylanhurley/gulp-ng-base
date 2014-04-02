@@ -12,7 +12,8 @@
     "lodash": "~2.4.1",
     "angular-motion": "~0.3.2",
     "bootstrap-additions": "~0.2.2",
-    "font-awesome": "~4.0.3"
+    "font-awesome": "~4.0.3",
+    "angular-sanitize": "~1.2.15"
   },
   "devDependencies": {},
   "overrides": {
