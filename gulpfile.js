@@ -193,7 +193,7 @@ gulp.task('useref', function () {
   return es.merge(
     gulp.src('.tmp/images/**/*.*', {base: '.tmp'}),
     gulp.src('.tmp/fonts/**/*.*', {base: '.tmp'}),
-    gulp.src('.tmp/index.html').pipe($.useref.assets())
+    gulp.src('.tmp/index.html', {base: '.tmp'}).pipe($.useref.assets())
       .pipe(jsFilter)
       .pipe($.uglify())
       .pipe(jsFilter.restore())
@@ -204,6 +204,7 @@ gulp.task('useref', function () {
       .pipe($.useref())
       .pipe(gulp.dest('.tmp'))
     )
+    .pipe(gulp.dest('dist'))
     .pipe($.rev())
     .pipe(gulp.dest('dist'))
     .pipe($.rev.manifest())
@@ -391,7 +392,7 @@ gulp.task('build-prod', function(cb) {
     'build-dev',
     'images',
     'useref',
-    'copy',
+    //'copy',
     'replace',
     'cdnize',
     's3',
