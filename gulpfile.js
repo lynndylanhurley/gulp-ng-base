@@ -285,10 +285,10 @@ gulp.task('push', $.shell.task([
   'git add -u .',
   'git add .',
   'git commit -am "commit for '+tag+' push"',
-  'git push -f '+env+' '+tag+':master'
-  //'git checkout master',
-  //'git branch -D '+tag,
-  //'rm -rf '+DIST_DIR
+  'git push -f '+env+' '+tag+':master',
+  'git checkout master',
+  'git branch -D '+tag,
+  'rm -rf '+DIST_DIR
 ]));
 
 
