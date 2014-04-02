@@ -385,10 +385,6 @@ gulp.task('reload-js-tmpl', function(cb) {
   seq('js-tmpl', 'base-tmpl', cb);
 });
 
-gulp.task('reload-stylus', function(cb) {
-  seq('sprites', 'stylus', cb);
-});
-
 gulp.task('build-prod', function(cb) {
   seq(
     'build-dev',
