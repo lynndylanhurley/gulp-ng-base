@@ -212,12 +212,6 @@ gulp.task('useref', function () {
     .pipe($.size());
 });
 
-gulp.task('copy', function() {
-  return gulp.src(['.tmp/*.html'])
-    .pipe(gulp.dest('dist'))
-    .pipe($.size());
-});
-
 // Update file version refs
 gulp.task('replace', function() {
   var manifest = require('./.tmp/rev-manifest');
@@ -225,19 +219,18 @@ gulp.task('replace', function() {
   var patterns = []
   for (var k in manifest) {
     patterns.push({
-      match: k,
+      pattern: k,
       replacement: manifest[k]
     });
   };
 
+  $.util.log('patterns', patterns)
+
   return gulp.src([
-    'dist/styles/**/*.css',
-    'dist/*.html'
+    'dist/*.html',
+    'dist/styles/**/*.css'
   ], {base: 'dist'})
-    .pipe($.replaceTask({
-      patterns: patterns,
-      usePrefix: false
-    }))
+    .pipe($.frep(patterns))
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });
@@ -392,7 +385,6 @@ gulp.task('build-prod', function(cb) {
     'build-dev',
     'images',
     'useref',
-    'copy',
     'replace',
     'cdnize',
     's3',
