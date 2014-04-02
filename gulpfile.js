@@ -392,10 +392,10 @@ gulp.task('build-prod', function(cb) {
     'build-dev',
     'images',
     'useref',
-    //'copy',
-    //'replace',
-    //'cdnize',
-    //'s3',
+    'copy',
+    'replace',
+    'cdnize',
+    's3',
     cb
   );
 });
