@@ -224,8 +224,6 @@ gulp.task('replace', function() {
     });
   };
 
-  $.util.log('patterns', patterns)
-
   return gulp.src([
     'dist/*.html',
     'dist/styles/**/*.css'
