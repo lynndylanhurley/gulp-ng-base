@@ -66,3 +66,31 @@ angular.module('defsynthApp')
       content: "This<br />is a multiline <b>HTML</b> message!"
       saved:   true
 
+
+    $scope.dropdown = [
+      {
+        text: '<i class="fa fa-download"></i>&nbsp;Another action'
+        href: '#anotherAction'
+      }, {
+        text: '<i class="fa fa-globe"></i>&nbsp;Display an alert'
+        click: '$alert("Oh fuck!")'
+      }, {
+        divider: true
+      }, {
+        text: '<i class="fa fa-download"></i>&nbsp;Separated link'
+        href: '#separatedLink'
+      }
+    ]
+
+    $scope.selectedState = ''
+    $scope.states = [
+      "Alabama","Alaska","Arizona","Arkansas","California","Colorado",
+      "Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho",
+      "Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine",
+      "Maryland","Massachusetts","Michigan","Minnesota","Mississippi",
+      "Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey",
+      "New Mexico","New York","North Dakota","North Carolina","Ohio",
+      "Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina",
+      "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia",
+      "Washington","West Virginia","Wisconsin","Wyoming"
+    ]

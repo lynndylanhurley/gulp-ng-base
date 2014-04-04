@@ -1,4 +1,40 @@
+sidenav-width = 150px
 body.style-guide
+  .sg-sidenav
+    width sidenav-width
+    font-size 12px
+    line-height 12px
+
+    &.affix
+      width sidenav-width
+
+    ul
+      li
+        a
+          color rgba(0, 0, 0, 0.3)
+          &:hover
+            background transparent
+
+      li.active
+        >a
+          color rgba(0, 0, 0, 0.8)
+          border-right solid rgba(0, 0, 0, 0.5) 1px
+          //background linear-gradient(left, white, sidenav-border-color)
+
+        ul
+          display block
+
+      ul
+        padding-left 20px
+        display none
+
+        li.active
+          >a
+            color rgba(0, 0, 0, 0.6)
+            border-right solid rgba(0, 0, 0, 0.1) 1px
+            //background linear-gradient(left, white, lighten(sidenav-border-color, 50%))
+
+
   .sg-example
     position relative
     padding 45px 15px 15px
