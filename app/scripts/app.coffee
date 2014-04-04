@@ -15,6 +15,8 @@ angular.module('defsynthApp', [
     # default to 404 if state not found
     $urlRouterProvider.otherwise('/404')
 
+    # fix bug with spy cache
+
     $stateProvider
       .state 'index',
         url: '/'
