@@ -70,7 +70,8 @@
     "event-stream": "~3.1.1",
     "run-sequence": "~0.3.6",
     "lazypipe": "~0.2.1",
-    "gulp-frep": "~0.1.1"
+    "gulp-frep": "~0.1.1",
+    "gulp-cached": "0.0.3"
   },
   "engines": {
     "node": ">=0.10.0"
