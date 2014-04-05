@@ -21,6 +21,7 @@ angular.module('defsynthApp', [
       .state 'index',
         url: '/'
         templateUrl: 'index.html'
+        controller: 'IndexCtrl'
 
       .state '404',
         url: '/404'
@@ -30,3 +31,7 @@ angular.module('defsynthApp', [
         url: '/style-guide'
         templateUrl: 'style-guide.html'
         controller: 'StyleGuideCtrl'
+
+      .state 'terms',
+        url: '/terms'
+        templateUrl: 'terms.html'

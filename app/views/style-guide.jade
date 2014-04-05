@@ -1,12 +1,11 @@
-.page-header
-  h1 Style Guide
-
-
 .row
-
-  .col-sm-3.col-md-2.hidden-xs
-    .sg-sidenav(bs-affix, role='complementary')
+  #sidenav.col-sm-3.col-md-2.hidden-xs
+    .sg-sidenav(bs-affix, role='complementary', data-offset-top='-80')
       ul.nav.nav-stacked(bs-scrollspy-list)
+        li(data-target='#style-guide')
+          a(href='#style-guide', scoll-to)
+            span.list-header Style guide
+
         li(data-target='#headers')
           a(href='#headers', scroll-to) Headers
 
@@ -102,8 +101,15 @@
               a(href='#components-typeaheads', scroll-to) Typeaheads
 
 
-  .col-sm-9.col-md-10
-    h2#headers Headers
+  #content.col-sm-9.col-md-10
+    .page-header
+      h1
+        a.anchor#style-guide
+        | Style Guide
+
+    h2
+      a.anchor#headers
+      | Headers
 
     .sg-example
       h1
@@ -130,42 +136,60 @@
         | This is an h6 header
         small &nbsp; Secondary Text
 
-    h2#text-emphasis Text Emphasis
+    h2
+      a.anchor#text-emphasis
+      | Text Emphasis
 
-    h3#text-emphasis-small-text Small Text
+    h3
+      a.anchor#text-emphasis-small-text
+      Small Text
 
     .sg-example
       small This line of text is meant to be treated as fine print
 
-    h3#text-emphasis-bold-text Bold
+    h3
+      a.anchor#text-emphasis-bold-text
+      | Bold
 
     .sg-example
       = 'The following snippet is '
       strong rendered as bold text
 
-    h3#text-emphasis-italics Italics
+    h3
+      a.anchor#text-emphasis-italics
+      | Italics
 
     .sg-example
       = 'The following snippet is '
       em rendered as italicized text
 
-    h2#lists Lists
+    h2
+      a.anchor#lists 
+      | Lists
 
-    h3#lists-ol Ordered List
+    h3
+      a.anchor#lists-ol 
+      | Ordered List
 
     .sg-example
       ol
         li(ng-repeat='item in fakeListContent') {{ item }}
 
-    h3#lists-ul Unordered List
+    h3
+      a.anchor#lists-ul 
+      | Unordered List
 
     .sg-example
       ul
         li(ng-repeat='item in fakeListContent') {{ item }}
 
-    h2#tables Tables
+    h2
+      a.anchor#tables 
+      | Tables
 
-    h3#tables-default Default Table
+    h3
+      a.anchor#tables-default 
+      | Default Table
 
     .sg-example
       table.table.table-hover
@@ -184,7 +208,9 @@
             td {{ user.email }}
 
 
-    h3#tables-striped Striped Table
+    h3
+      a.anchor#tables-striped 
+      | Striped Table
 
     .sg-example
       table.table.table-striped.table-hover
@@ -202,7 +228,9 @@
             td {{ user.lastName }}
             td {{ user.email }}
 
-    h3#tables-bordered Bordered Table
+    h3
+      a.anchor#tables-bordered 
+      | Bordered Table
 
     .sg-example
       table.table.table-bordered.table-hover
@@ -220,7 +248,9 @@
             td {{ user.lastName }}
             td {{ user.email }}
 
-    h3#tables-ctx Contextual Table Items
+    h3
+      a.anchor#tables-ctx 
+      | Contextual Table Items
 
     .sg-example
       table.table.table-hover
@@ -268,9 +298,13 @@
             td {{ fakeUsers[5].lastName }}
             td {{ fakeUsers[5].email }}
 
-    h2#forms Forms
+    h2
+      a.anchor#forms 
+      | Forms
 
-    h3#forms-basic Basic Form
+    h3
+      a.anchor#forms-basic 
+      | Basic Form
 
     .sg-example
       form(role="form")
@@ -294,7 +328,9 @@
 
         button.btn.btn-default(type='submit') Submit
 
-    h3#forms-inline Inline Form
+    h3
+      a.anchor#forms-inline 
+      | Inline Form
 
     .sg-example
       form.form-inline(role='form')
@@ -313,7 +349,9 @@
 
         button.btn.btn-default(type='submit') Sign in
 
-    h3#forms-horizontal Horizontal Form
+    h3
+      a.anchor#forms-horizontal 
+      | Horizontal Form
 
     .sg-example
       form.form-horizontal
@@ -339,13 +377,12 @@
             button.btn.btn-default(type='submit') Sign in
 
 
-    h3#forms-field-types Field types
+    h3
+      a.anchor#forms-field-types 
+      | Field types
 
     .sg-example
       input.form-control(type='text', placeholder='Text input')
-
-    .sg-example
-      input.form-control.focused(type='text', placeholder='Disabled text input', disabled)
 
     .sg-example
       textarea.form-control(rows='3', placeholder='Text area')
@@ -386,7 +423,9 @@
         option To select
         option Multiple options
 
-    h3#forms-disabled Disabled Fieldset
+    h3
+      a.anchor#forms-disabled 
+      | Disabled Fieldset
 
     .sg-example
       form(role='form')
@@ -394,6 +433,10 @@
           .form-group
             label(for='disabledTextInput') Disabled input
             input#disabledTextInput.form-control(placeholder='Disabled text input')
+
+          .form-group
+            label(for='disabledTextarea') Disabled text area
+            textarea#disabledTextarea.form-control(rows='3', placeholder='Text area')
 
           .form-group
             label(for='disabledSelect') Disabled select menu
@@ -407,7 +450,9 @@
 
           button.btn.btn-primary(type='submit') Submit
 
-    h3#forms-validation Validation states
+    h3
+      a.anchor#forms-validation 
+      | Validation states
 
     .sg-example
       .form-group.has-success.has-feedback
@@ -425,9 +470,13 @@
         input#inputError1.form-control(type='text')
         span.glyphicon.glyphicon-remove.form-control-feedback
 
-    h2#buttons Buttons
+    h2
+      a.anchor#buttons 
+      | Buttons
 
-    h3#buttons-options Options
+    h3
+      a.anchor#buttons-options 
+      | Options
 
     .sg-example
       button.btn.btn-default(type='button') Default
@@ -438,7 +487,9 @@
       button.btn.btn-danger(type='button') Danger
       button.btn.btn-link(type='button') link
 
-    h3#buttons-sizes Sizes
+    h3
+      a.anchor#buttons-sizes
+      | Sizes
 
     .sg-example
       p
@@ -462,21 +513,29 @@
         button.btn.btn-default.btn-lg.btn-block(type='button') Block level button
 
 
-    h3#buttons-active Active state
+    h3
+      a.anchor#buttons-active
+      | Active state
 
     .sg-example
       button.btn.btn-primary.btn-lg.active(type='button') Primary button
       button.btn.btn-default.btn-lg.active(type='button') Button
 
-    h3#buttons-disabled Disabled state
+    h3
+      a.anchor#buttons-disabled
+      | Disabled state
 
     .sg-example
       button.btn.btn-primary.btn-lg(type='button', disabled='disabled') Primary button
       button.btn.btn-default.btn-lg(type='button', disabled='disabled') Button
 
-    h2#images Images
+    h2
+      a.anchor#images
+      | Images
 
-    h3#images-shapes Image shapes
+    h3
+      a.anchor#images-shapes
+      | Image shapes
 
     .sg-example
       img.img-rounded(src="http://placehold.it/150x150")
@@ -485,11 +544,14 @@
       | &nbsp;
       img.img-thumbnail(src="http://placehold.it/150x150")
 
-    h2#components
+    h2
+      a.anchor#components
       | Components&nbsp;
       small (rely on javascript)
 
-    h3#components-modals Modals
+    h3
+      a.anchor#components-modals
+      | Modals
 
     .sg-example
       button.btn.btn-lg.btn-primary(
@@ -499,13 +561,17 @@
       )
         | Launch Modal
 
-    h3#components-asides Asides
+    h3
+      a.anchor#components-asides
+      | Asides
 
     .sg-example
       button.btn.btn-lg.btn-primary(bs-aside='aside')
         | Launch Aside
 
-    h3#components-alerts Alerts
+    h3
+      a.anchor#components-alerts
+      | Alerts
 
     .sg-example
       button.btn.btn-lg.btn-info(
@@ -544,7 +610,9 @@
         br
         small (top right)
 
-    h3#components-button-groups Button Groups
+    h3
+      a.anchor#components-button-groups
+      | Button Groups
 
     .sg-example
       label= 'Toggle: '
@@ -578,7 +646,9 @@
           input.btn.btn-default(type='radio', value='2')
           | Third
 
-    h3#components-selects Selects
+    h3
+      a.anchor#components-selects
+      | Selects
 
     .sg-example
       label= 'Single select: '
@@ -607,7 +677,9 @@
         span.caret
 
 
-    h3#components-datepickers Datepickers
+    h3
+      a.anchor#components-datepickers
+      | Datepickers
 
     .sg-example
       form.form-inline(name='datepickerForm', role='form')
@@ -672,7 +744,9 @@
               bs-datepicker
             )
 
-    h3#components-timepickers Timepickers
+    h3
+      .anchor#components-timepickers
+      | Timepickers
 
     .sg-example
 
@@ -736,7 +810,9 @@
             )
 
 
-    h3#components-tooltips Tooltips
+    h3
+      a.anchor#components-tooltips 
+      | Tooltips
 
     .sg-example
       p
@@ -783,7 +859,9 @@
           input(type='checkbox', ng-model='tooltip.checked')
           | Remember me
 
-    h3#components-popovers Popovers
+    h3
+      a.anchor#components-popovers
+      | Popovers
 
     .sg-example
       button.btn.btn-lg.btn-primary(
@@ -824,7 +902,9 @@
         br
         small (right, using template)
 
-    h3#components-dropdowns Dropdowns
+    h3
+      a.anchor#components-dropdowns
+      | Dropdowns
 
     .sg-example
       button.btn.btn-lg.btn-primary(
@@ -834,7 +914,9 @@
       )
         | Click to toggle dropdown
 
-    h3#components-typeaheads Typeaheads
+    h3
+      a.anchor#components-typeaheads
+      | Typeaheads
 
     .sg-example
       form.form-inline(role='form')

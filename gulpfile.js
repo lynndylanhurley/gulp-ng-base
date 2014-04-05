@@ -350,7 +350,7 @@ gulp.task('watch', function () {
   gulp.watch('app/views/**/*.jade', ['reload-js-tmpl'])
 
   // Watch image files
-  //gulp.watch('app/images/**/*', ['images']);
+  gulp.watch('app/images/**/*', ['images']);
 
   // Watch bower files
   gulp.watch('app/bower_components/*', ['bowerjs', 'bowercss']);
@@ -363,6 +363,7 @@ gulp.task('build-dev', function(cb) {
   seq(
     'clean',
     'sprites',
+    'images',
     'transpile',
     'js-tmpl',
     'base-tmpl',
@@ -381,7 +382,6 @@ gulp.task('reload-js-tmpl', function(cb) {
 gulp.task('build-prod', function(cb) {
   seq(
     'build-dev',
-    'images',
     'useref',
     'replace',
     'cdnize',
