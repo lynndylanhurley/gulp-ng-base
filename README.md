@@ -19,6 +19,14 @@ This app uses the following:
 * [lodash](http://lodash.com/docs)
 * [modernizr](http://modernizr.com/)
 
+
+#### Testing
+* [karma](http://karma-runner.github.io/0.12/index.html)
+* [protractor](https://github.com/angular/protractor)
+* [mocha](http://visionmedia.github.io/mocha/)
+* [chai](http://chaijs.com/guide/installation/)
+* [sinon](http://sinonjs.org/)
+
 ---
 
 ### Requirements
@@ -36,18 +44,22 @@ This app uses the following:
 ### Development
 
 #### Start Dev Server
-`gulp dev` - start dev server. use livereload for automatic refresh.
+`gulp dev` - broadcast dev server to [localhost:9000](http://localhost:9000). use livereload for automatic refresh.
 
 ---
 
 ### Testing
 
-Unit tests use karma + mocha. E2E Tests use protractor + mocha.
-
 #### Unit Tests
+
+Unit tests use karma + mocha.
+
 `karma start` - runs all tests in `test/unit/**/*.coffee`
 
 #### E2E Tests
+
+E2E Tests use protractor + mocha.
+
 `gulp test:e2e` - runs all tests in `test/e2e/**/*.coffee`
 
 ---
