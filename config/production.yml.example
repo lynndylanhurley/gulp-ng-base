@@ -1,0 +1,3 @@
+AWS_KEY:    XXXXXXXXXX
+AWS_SECRET: XXXXXXXXXX
+STATIC_URL: '//s3.amazonaws.com/defsynth-production/'

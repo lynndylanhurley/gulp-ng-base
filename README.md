@@ -1,3 +1,24 @@
+# defsynth
+
+## About
+
+This app uses the following:
+
+#### Languages
+* [jade templates](http://jade-lang.com/)
+* [stylus stylesheets](http://learnboost.github.io/stylus/)
+* [coffeescript](http://coffeescript.org/)
+
+#### Libraries
+* [bootstrap](http://getbootstrap.com/)
+* [nib](http://visionmedia.github.io/nib/)
+* [jquery](http://jquery.com/)
+* [angularjs](http://angularjs.org/)
+* [angular-ui router](https://github.com/angular-ui/ui-router)
+* [angular-strap](http://mgcrea.github.io/angular-strap/)
+* [lodash](http://lodash.com/docs)
+* [modernizr](http://modernizr.com/)
+
 ### Requirements
 * nodejs
 * cairo
@@ -11,11 +32,23 @@
 ### Development
 
 #### Start Dev Server
-`gulp watch` - start dev server, reload when files change
+`gulp dev` - start dev server, reload when files change
 
-#### Start Test Server
-1. `gulp karma` - inject bower deps into karma.conf
-1. `karma start` - run all tests, rerun when files change
+### Deployment
+
+This assumes the following, where ENV_NAME is the name of the target NODE_ENV (production, staging, etc.)
+
+1. An heroku app exists, and its git remote is named ENV_NAME
+1. The heroku app has its NODE_ENV set to ENV_NAME (using `heroku config:set`)
+1. there is an s3 bucket config defined in `config/ENV_NAME`.yml. see `config/production.yml.example` for an example configuration.
+
+#### Push to heroku `production` env
+
+`NODE_ENV=production gulp deploy`
+
+#### Push to heroku `staging` env
+
+`NODE_ENV=staging gulp deploy`
 
 
 ### Testing
