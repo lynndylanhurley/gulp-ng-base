@@ -19,6 +19,8 @@ This app uses the following:
 * [lodash](http://lodash.com/docs)
 * [modernizr](http://modernizr.com/)
 
+---
+
 ### Requirements
 * nodejs
 * cairo
@@ -29,10 +31,26 @@ This app uses the following:
 1. `npm install` - install all server-side deps
 1. `bower install` - install all client-side deps
 
+---
+
 ### Development
 
 #### Start Dev Server
 `gulp dev` - start dev server. use livereload for automatic refresh.
+
+---
+
+### Testing
+
+Unit tests use karma + mocha. E2E Tests use protractor + mocha.
+
+#### Unit Tests
+`karma start` - runs all tests in `test/unit/**/*.coffee`
+
+#### E2E Tests
+`gulp test:e2e` - runs all tests in `test/e2e/**/*.coffee`
+
+---
 
 ### Deployment
 
@@ -49,14 +67,3 @@ This assumes the following, where `ENV_NAME` is the name of the target `NODE_ENV
 #### Push to heroku `staging` env
 
 `NODE_ENV=staging gulp deploy`
-
-
-### Testing
-
-Unit tests use karma + mocha. E2E Tests use protractor + mocha.
-
-#### Unit Tests
-`karma start` - runs all tests in `test/unit/**/*.coffee`
-
-#### E2E Tests
-`gulp test:e2e` - runs all tests in `test/e2e/**/*.coffee`
