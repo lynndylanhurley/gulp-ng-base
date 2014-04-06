@@ -38,12 +38,22 @@ html.no-js
         .container
           .navbar-header
             a.navbar-brand.text-muted(ui-sref='index') defsynth site
+            button.navbar-toggle(
+              type='button'
+              ng-click='collapse = !collapse'
+            )
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
 
-          ul.nav.navbar-nav
-            li(ui-sref-active='active')
-              a(ui-sref='index') Home
-            li(ui-sref-active='active')
-              a(ui-sref='style-guide') Style Guide
+          #top-nav-collapse.collapse.navbar-collapse(
+            ng-class='{in: collapse}'
+          )
+            ul.nav.navbar-nav
+              li(ui-sref-active='active')
+                a(ui-sref='index') Home
+              li(ui-sref-active='active')
+                a(ui-sref='style-guide') Style Guide
 
       .container
         div(ui-view)
