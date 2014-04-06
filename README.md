@@ -32,15 +32,15 @@ This app uses the following:
 ### Development
 
 #### Start Dev Server
-`gulp dev` - start dev server, reload when files change
+`gulp dev` - start dev server. use livereload for automatic refresh.
 
 ### Deployment
 
-This assumes the following, where ENV_NAME is the name of the target NODE_ENV (production, staging, etc.)
+This assumes the following, where `ENV_NAME` is the name of the target `NODE_ENV` (`production`, `staging`, etc.)
 
-1. An heroku app exists, and its git remote is named ENV_NAME
-1. The heroku app has its NODE_ENV set to ENV_NAME (using `heroku config:set`)
-1. there is an s3 bucket config defined in `config/ENV_NAME`.yml. see `config/production.yml.example` for an example configuration.
+1. An heroku app exists, and its git remote is named `ENV_NAME`
+1. The heroku app has its `NODE_ENV` set to `ENV_NAME` (using `heroku config:set`)
+1. there is an s3 bucket config defined in `config/ENV_NAME.yml`. see `config/production.yml.example` for an example configuration.
 
 #### Push to heroku `production` env
 
