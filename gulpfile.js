@@ -226,7 +226,8 @@ gulp.task('replace', function() {
 
   return gulp.src([
     'dist/*.html',
-    'dist/styles/**/*.css'
+    'dist/styles/**/*.css',
+    'dist/scripts/main*.js'
   ], {base: 'dist'})
     .pipe($.frep(patterns))
     .pipe(gulp.dest('dist'))
