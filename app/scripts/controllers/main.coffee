@@ -1,5 +1,5 @@
 angular.module('defsynthApp')
-  .controller 'MainCtrl', ($rootScope, $location, $state, $stateParams, usSpinnerService, $timeout) ->
+  .controller 'MainCtrl', ($rootScope, $scope, $location, $state, $stateParams, usSpinnerService, $timeout) ->
     # cache element selectors
     $body = $('body')
 
@@ -13,6 +13,9 @@ angular.module('defsynthApp')
 
       # show loading spinner
       usSpinnerService.spin('main-loading')
+
+      # close dropdown nav
+      $scope.collapse = false
 
     # new page, DOM has finished loading
     $rootScope.$on '$viewContentLoaded', (event, viewConfig) ->
