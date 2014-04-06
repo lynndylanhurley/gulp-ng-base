@@ -2,6 +2,7 @@ angular.module('defsynthApp', [
   'ngSanitize'
   'ui.router'
   'mgcrea.ngStrap'
+  'angularSpinner'
   'defsynthPartials'
 ])
   .config ($stateProvider, $urlRouterProvider, $locationProvider, $sceProvider) ->

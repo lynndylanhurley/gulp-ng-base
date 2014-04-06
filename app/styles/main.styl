@@ -5,6 +5,10 @@ header-height = 50px
 html, body
   height 100%
 
+  &.loading #content
+    opacity 0
+    transition-duration 0s
+
   .wrap
     padding-top header-height
     min-height 100%
@@ -17,6 +21,11 @@ html, body
 
   #footer
     height footer-height
+
+  #content
+    opacity 1
+    transition-property opacity
+    transition-duration 0.5s
 
 
 .browsehappy

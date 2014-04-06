@@ -55,7 +55,7 @@ html.no-js
               li(ui-sref-active='active')
                 a(ui-sref='style-guide') Style Guide
 
-      .container
+      .container#content
         div(ui-view)
 
     footer#footer
@@ -63,6 +63,11 @@ html.no-js
         .text-center
           .btn-group
             a.btn.btn-link.btn-xs(ui-sref='terms') Terms &amp; Conditions
+
+    span#spinner(
+      us-spinner='{radius:30, width: 2, length: 16, color: "#dedede"}'
+      spinner-key='main-loading'
+    )
 
     // build:js /scripts/vendor.js
     // bower:js
