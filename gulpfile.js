@@ -147,11 +147,24 @@ var jadeify = lazypipe()
     pretty: true
   });
 
+// inject global js vars
+var injectGlobals = lazypipe()
+  .pipe($.frep, [
+    {
+      pattern: '@@GLOBALS',
+      replacement: JSON.stringify({
+        OCTOPART_KEY: config.OCTOPART_KEY,
+        NEWARK_KEY:   config.NEWARK_KEY
+      })
+    }
+  ]);
+
 // Jade to HTML
 gulp.task('base-tmpl', function() {
   return gulp.src('app/index.jade')
     .pipe($.changed('.tmp'))
     .pipe(jadeify())
+    .pipe(injectGlobals())
     .pipe($.inject($.bowerFiles({read: false}), {
       ignorePath: ['app'],
       starttag: '<!-- bower:{{ext}}-->',
@@ -215,6 +228,8 @@ gulp.task('useref', function () {
 // Update file version refs
 gulp.task('replace', function() {
   var manifest = require('./.tmp/rev-manifest');
+
+  manifest['@@OCTOPART_KEY'] = config.OCTOPART_KEY
 
   var patterns = []
   for (var k in manifest) {

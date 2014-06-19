@@ -4,7 +4,7 @@ var httpProxy = require('http-proxy');
 var CONFIG    = require('config');
 var s3Policy  = require('./server/s3');
 
-var port    = process.env.PORT || 9000;
+var port    = process.env.PORT || 9999;
 var distDir = '/.tmp';
 var app     = express();
 

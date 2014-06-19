@@ -14,7 +14,10 @@
     "bootstrap-additions": "~0.2.2",
     "font-awesome": "~4.0.3",
     "angular-sanitize": "~1.2.15",
-    "angular-spinner": "~0.4.0"
+    "angular-spinner": "~0.4.0",
+    "underscore.string": "git@github.com:epeli/underscore.string.git#c8ad9d42fe7ade4f17b0313f5fcd950af72f3fcb",
+    "angular-local-storage": "~0.0.5",
+    "angular-resource": "~1.2.17"
   },
   "devDependencies": {},
   "overrides": {

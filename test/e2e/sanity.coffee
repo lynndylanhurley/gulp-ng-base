@@ -20,4 +20,4 @@ describe 'testing sanity', ->
 
     it 'should wrap webdriver', ->
       browser.get('/')
-      expect(browser.getTitle()).to.eventually.equal('defsynth site')
+      expect(browser.getTitle()).to.eventually.equal('defsynth')
